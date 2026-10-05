@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Note | Q3 2026 Deployment Log</title>
+  
+  <!-- SEO & Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://trustalgo.co/notes/performance-q3.html" />
+  <meta property="og:title" content="Execution Metrics: Q3 2026 Deployment" />
+  <meta property="og:description" content="Live routing performance, drawdown analysis, and risk enforcement on Hyperliquid L1." />
+  <meta property="og:image" content="https://trustalgo.co/og.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  
+  <style>
+    :root {
+      --bg: #07080A;
+      --line-soft: rgba(226, 232, 240, 0.08);
+      --line: rgba(121, 184, 184, 0.16);
+      --accent: #79B8B8;
+      --accent-2: #C8E6E4;
+      --text: #E8EEF4;
+      --muted: #8B98A8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: Inter, sans-serif; line-height: 1.6; }
+    
+    header { padding: 22px 20px; border-bottom: 1px solid var(--line-soft); display: flex; justify-content: space-between; }
+    .brand-name { letter-spacing: 0.28em; font-size: 12px; font-weight: 500; color: var(--text); text-decoration: none;}
+    nav a { color: var(--muted); text-decoration: none; font-size: 12px; transition: 0.2s;}
+    nav a:hover { color: var(--accent); }
+
+    /* Whitepaper Layout */
+    .doc-wrap { max-width: 680px; margin: 60px auto 100px; padding: 0 20px; }
+    .doc-meta { font-family: "JetBrains Mono", monospace; color: var(--accent); font-size: 11px; letter-spacing: 0.1em; margin-bottom: 24px; display: flex; gap: 16px; }
+    .doc-title { font-size: 36px; font-weight: 500; line-height: 1.15; margin-bottom: 40px; letter-spacing: -0.02em; }
+    
+    .doc-body p { color: var(--muted); font-size: 16px; line-height: 1.8; margin-bottom: 24px; font-weight: 300; }
+    .doc-body h3 { color: var(--text); font-size: 18px; font-weight: 500; margin: 40px 0 16px; }
+
+    /* Metrics Grid */
+    .metrics-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 0;
+      border: 1px solid var(--line); margin: 32px 0; background: rgba(12,14,18,0.5);
+    }
+    .metrics-grid div { padding: 20px; border-right: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
+    .metrics-grid div:nth-child(even) { border-right: none; }
+    .metrics-grid div:nth-child(3), .metrics-grid div:nth-child(4) { border-bottom: none; }
+    .metrics-grid span { display: block; font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.16em; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; }
+    .metrics-grid strong { font-weight: 500; font-size: 20px; color: var(--accent-2); }
+
+    /* Code Block */
+    .code-block {
+      background: rgba(12,14,18,0.8); border: 1px solid var(--line-soft);
+      padding: 20px; font-family: "JetBrains Mono", monospace; font-size: 12px;
+      color: var(--muted); margin: 32px 0; overflow-x: auto; line-height: 1.6;
+    }
+    .highlight { color: #E7D7A8; }
+    .highlight-green { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="brand-name" href="/">TRUSTALGO</a>
+    <nav><a href="/notes/index.html">← All Notes</a></nav>
+  </header>
+
+  <main class="doc-wrap">
+    <div class="doc-meta">
+      <span>REF: PERF-001</span>
+      <span>//</span>
+      <span>04 OCT 2026</span>
+    </div>
+    
+    <h1 class="doc-title">Execution Metrics:<br>Q3 2026 Deployment Log</h1>
+    
+    <div class="doc-body">
+      <p>This report details the live execution metrics of the TrustAlgo routing proxy from inception (June 2026) through the end of Q3 2026. The data reflects 25 consecutive execution sequences across major L1 digital assets (BTC, ETH, SOL) routed exclusively via the Hyperliquid order book.</p>
+      
+      <div class="metrics-grid">
+        <div><span>Net Return</span><strong>+22.38%</strong></div>
+        <div><span>Max Drawdown</span><strong style="color: #E7D7A8;">-2.91%</strong></div>
+        <div><span>Risk Model</span><strong>Hard-Coded</strong></div>
+        <div><span>Venue</span><strong>Hyperliquid L1</strong></div>
+      </div>
+
+      <h3>Phase 1: Controlled Drawdown & Risk Enforcement</h3>
+      <p>Between June and late August, global liquidity experienced severe volatility compression and range-bound chop. During this period, the routing engine executed a series of short and adjustment sequences.</p>
+      
+      <p>Rather than overriding the system or averaging down (martingale), the proxy strictly enforced hard-coded stop-losses. The result was a surgical, controlled drawdown that never exceeded <strong>-2.91%</strong> peak-to-valley. Capital preservation during unfavorable regimes is the primary directive of quantitative infrastructure.</p>
+
+      <div class="code-block">
+[RISK PROTOCOL]
+> Max_Leverage_Ceiling : 2.0x
+> Averaging_Down       : <span class="highlight">FALSE</span>
+> Stop_Loss_Execution  : <span class="highlight-green">AUTOMATED</span>
+> Max_Recorded_DD      : 2.91% (WITHIN TOLERANCE)
+      </div>
+
+      <h3>Phase 2: Asymmetric Expansion Capture</h3>
+      <p>By preserving capital through the summer consolidation, the nodes were optimally positioned for the September liquidity expansion. Hard-coded directional triggers fired on BTC, ETH, and SOL pairs.</p>
+      
+      <p>Because the engine is latency-optimized and bypasses retail UI RPC delays, it successfully captured the macro breakout, scaling the indexed capital from the summer lows to a final Q3 net return of +22.38% (1223.8 Basis Points).</p>
+
+      <h3>Architectural Takeaway</h3>
+      <p>Execution is a function of discipline, not prediction. A non-custodial engine must prove its ability to cut losses systematically before it can be trusted to capture asymmetric upside. The Q3 deployment log mathematically validates this framework.</p>
+    </div>
+  </main>
+
+</body>
+</html>
