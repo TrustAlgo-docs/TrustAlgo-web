@@ -267,6 +267,7 @@
         <a class="hide" href="#scope">Scope</a>
         <a class="hide" href="#model">Model</a>
         <a class="hide" href="#setup">Setup</a>
+        <a class="hide" href="#security">Security</a>
         <a class="nav-cta" href="#onboarding">Request Node</a>
       </nav>
     </header>
@@ -446,8 +447,34 @@
         <div class="note"><strong>Scope.</strong> The API wallet can place and manage orders. It cannot withdraw. Withdrawals stay on the master wallet. If the key is lost, generate a new API wallet. Do not reuse a deregistered agent address.</div>
       </section>
 
+      <section class="split" id="security">
+        <div>
+          <p class="sec-label">05 — SECURITY ARCHITECTURE</p>
+          <h2>The API key lifecycle.</h2>
+          <p class="lede">No private key is ever written in plaintext to disk or database. TrustAlgo's infrastructure uses a four-phase data isolation protocol to ensure the Agent Wallet remains protected.</p>
+        </div>
+        <div class="principles">
+          <div>
+            <strong>1. TRANSMISSION</strong>
+            <p><strong>Encrypted tunnel.</strong> When you enter the private key on the site, the data does not travel over the public internet. The connection uses an encrypted TLS tunnel (Cloudflare Tunnel) that routes the payload directly to the isolated backend.</p>
+          </div>
+          <div>
+            <strong>2. CRYPTOGRAPHY</strong>
+            <p><strong>Immediate AES-256-GCM.</strong> As soon as the server receives the payload, the API key is instantly encrypted in memory using the AES-256-GCM (Authenticated Encryption with Associated Data) standard. The system does not execute any plaintext logging of the key.</p>
+          </div>
+          <div>
+            <strong>3. STORAGE</strong>
+            <p><strong>Zero-knowledge database.</strong> The TrustAlgo PostgreSQL database strictly stores three encrypted strings: the ciphertext, the initialization vector (IV), and an authentication tag. The Master Key required to decode this data is physically isolated and does not reside in the database.</p>
+          </div>
+          <div>
+            <strong>4. EXECUTION</strong>
+            <p><strong>In-memory decryption.</strong> The key is decrypted exclusively by the worker process tasked with dispatching orders to Hyperliquid. Decryption occurs in memory (RAM) a fraction of a second before signing the order. Once dispatched, the plaintext string is immediately destroyed.</p>
+          </div>
+        </div>
+      </section>
+
       <section id="onboarding" class="form-section">
-        <p class="sec-label">05 — ONBOARDING</p>
+        <p class="sec-label">06 — ONBOARDING</p>
         <h2>Secure Node Provisioning & Billing.</h2>
         <p class="lede">Connect your Hyperliquid Agent credentials. During onboarding, you will be asked to authorize the TrustAlgo Billing Smart Contract to deduct performance fees in USDC on Arbitrum.</p>
         
