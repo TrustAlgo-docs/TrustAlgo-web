@@ -25,7 +25,7 @@
       --accent-2: #C8E6E4;
       --text: #E8EEF4;
       --muted: #8B98A8;
-      --warn: #E7D7A8;
+      --warn: #D19A66;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -90,7 +90,7 @@
     }
     .btn-primary { background: var(--accent); color: #071011; }
     .btn-primary:hover { background: transparent; color: var(--accent); border-color: var(--accent); }
-    .btn-ghost { color: var(--text); border-color: var(--line-soft); }
+    .btn-ghost { color: var(--text); background: transparent; border-color: var(--line-soft); }
     .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
     .btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .status {
@@ -142,16 +142,16 @@
       margin: 28px 0 64px; border: 1px solid var(--line);
       padding: 36px 28px; background: linear-gradient(120deg, rgba(121,184,184,0.05), transparent 42%), rgba(12,14,18,0.8);
     }
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+    .form-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 24px; }
     .form-group { display: flex; flex-direction: column; gap: 8px; }
-    .form-group.full { grid-column: 1 / -1; }
     .form-group label { font-family: "JetBrains Mono", monospace; font-size: 11px; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; }
     .form-control {
       background: rgba(7, 8, 10, 0.8); border: 1px solid var(--line-soft); color: var(--text);
-      padding: 14px; font-family: "JetBrains Mono", monospace; font-size: 13px; transition: border-color 0.2s;
+      padding: 14px; font-family: "JetBrains Mono", monospace; font-size: 13px; transition: border-color 0.2s; width: 100%;
     }
     .form-control:focus { outline: none; border-color: var(--accent); }
     .alloc-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    .form-error-msg { font-family: "JetBrains Mono", monospace; font-size: 11px; color: var(--warn); display: none; margin-top: 4px; }
     .helper-text { font-size: 12px; color: var(--muted); font-weight: 300; margin-top: -4px; margin-bottom: 4px; line-height: 1.4; }
     
     footer.site {
@@ -225,21 +225,6 @@
     footer { align-items: flex-start; }
     .fine { max-width: 640px; line-height: 1.7; }
     
-    /* Stili per il popup di approvazione */
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(4px);
-      display: flex; justify-content: center; align-items: center; z-index: 100;
-      opacity: 0; visibility: hidden; transition: all 0.3s ease;
-    }
-    .modal-overlay.active { opacity: 1; visibility: visible; }
-    .modal-content {
-      background: var(--bg-2); border: 1px solid var(--accent); padding: 36px; max-width: 480px; width: 100%;
-      box-shadow: 0 0 24px rgba(121, 184, 184, 0.15); display: flex; flex-direction: column; gap: 20px;
-    }
-    .modal-content h3 { color: var(--accent-2); font-size: 20px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 8px;}
-    .modal-content p { color: var(--muted); font-size: 14px; line-height: 1.5; }
-    .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 12px; }
-    
     @media (max-width: 860px) {
       nav .hide { display: none; }
       .hero, .split, .grid-3, .form-grid, .alloc-grid, .scope, .spec, footer.site { grid-template-columns: 1fr; }
@@ -249,9 +234,6 @@
       .hero { padding-top: 36px; }
     }
   </style>
-  
-  <!-- Includi Ethers.js per l'interazione Web3 -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
 </head>
 <body>
   <div class="grid"></div>
@@ -399,7 +381,7 @@
       <section id="setup">
         <p class="sec-label">04 — SETUP</p>
         <h2>Connect a wallet. Create an API wallet.</h2>
-        <p class="lede">Hyperliquid does not issue a classic exchange API key. You connect the master wallet, fund the account, then authorize an API wallet. The API wallet can sign trades. It cannot withdraw.</p>
+        <p class="lede">Hyperliquid does not issue a classic exchange API key. You must first connect your master wallet, <strong style="color: var(--accent-2); font-weight: 500;">deposit USDC from your wallet into the exchange</strong>, and then authorize an API wallet. The API wallet can sign trades. It cannot withdraw.</p>
         <div class="steps">
           <article class="step">
             <div class="n">01</div>
@@ -411,8 +393,8 @@
           <article class="step">
             <div class="n">02</div>
             <div>
-              <h3>Deposit collateral</h3>
-              <p>Use Deposit in the app and send USDC on a network the deposit window lists. The minimum credited deposit is 5 USDC. Amounts below that are not credited. Wait until the balance shows on Hyperliquid before creating the API wallet.</p>
+              <h3>Deposit USDC to the exchange</h3>
+              <p><strong style="color: var(--accent-2); font-weight: 500;">Connecting your wallet is not enough.</strong> You must actively transfer USDC from your personal wallet into your Hyperliquid account. Click "Deposit" in the app to bridge your funds (minimum 5 USDC). Wait until the balance shows on Hyperliquid before creating the API wallet. The algorithm can only trade with the balance actually deposited on the exchange.</p>
             </div>
           </article>
           <article class="step">
@@ -439,8 +421,8 @@
           <article class="step">
             <div class="n">06</div>
             <div>
-              <h3>Hand the key only to the node</h3>
-              <p>Keep the master address and the API wallet private key separate. The master address is the account. The private key is the signer. Do not paste either into this page. Request a node, then deliver the key through the channel TrustAlgo gives you. You can revoke the API wallet on the same API page at any time.</p>
+              <h3>Provision your node</h3>
+              <p>Keep the master address and the API wallet private key separate. The master address is the account. The private key is the signer. Proceed to the secure Onboarding section below to provision your node. You can revoke the API wallet on the Hyperliquid API page at any time.</p>
             </div>
           </article>
         </div>
@@ -475,59 +457,54 @@
 
       <section id="onboarding" class="form-section">
         <p class="sec-label">06 — ONBOARDING</p>
-        <h2>Secure Node Provisioning & Billing.</h2>
-        <p class="lede">Connect your Hyperliquid Agent credentials. During onboarding, you will be asked to authorize the TrustAlgo Billing Smart Contract to deduct performance fees in USDC on Arbitrum.</p>
+        <h2>Secure Node Provisioning.</h2>
+        <p class="lede">Connect your Hyperliquid Agent credentials. Your keys are encrypted immediately in memory. In the next step, Telegram will open automatically to link your profile without manual ID entry.</p>
         
-        <form id="onboardingForm" onsubmit="handleOnboardingFlow(event)">
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="alias">Node Alias / Entity Name</label>
-              <input type="text" id="alias" class="form-control" placeholder="e.g. AlphaFund" required />
-            </div>
-            
-            <div class="form-group">
-              <label for="telegram_id">Telegram User ID</label>
-              <input type="number" id="telegram_id" class="form-control" placeholder="Numbers only (e.g. 12345678)" required />
-            </div>
-  
-            <div class="form-group full">
-              <label for="api_key">Wallet Address</label>
-              <div class="helper-text">
-                The public address of your <strong>Main Wallet</strong> connected to Hyperliquid. This is the account that holds your collateral.
+        <div id="formContainer">
+            <form id="onboardingForm" onsubmit="submitToBackend(event)">
+              <div class="form-grid">
+      
+                <div class="form-group">
+                  <label for="api_key">Main Wallet Address</label>
+                  <div class="helper-text">
+                    The 42-character public address of your <strong>Main Wallet</strong> connected to Hyperliquid.
+                  </div>
+                  <input type="text" id="api_key" class="form-control" placeholder="0x..." required oninput="validateWallet(this)" />
+                  <span id="wallet_error" class="form-error-msg">⚠ Ensure this is a 42-character public address.</span>
+                </div>
+      
+                <div class="form-group">
+                  <label for="api_secret">API Private Key</label>
+                  <div class="helper-text">
+                    The 64/66-character <strong>Secret Private Key</strong> generated on the Hyperliquid API page. <em>Do not paste the API Wallet Address here.</em>
+                  </div>
+                  <input type="password" id="api_secret" class="form-control" placeholder="0x..." required oninput="validateKey(this)" />
+                  <span id="key_error" class="form-error-msg">⚠ This looks too short. Please paste the Private Key.</span>
+                </div>
+
               </div>
-              <input type="text" id="api_key" class="form-control" placeholder="0x..." required />
-            </div>
-  
-            <div class="form-group full">
-              <label for="api_secret">API Private Key</label>
-              <div class="helper-text">
-                The <strong>Secret Private Key</strong> generated on the Hyperliquid API page. <br>
-                <em>Note: Paste the second string provided by the exchange, <strong>NOT</strong> the API Wallet Address.</em>
+
+              <p class="sec-label" style="margin-top: 28px;">CLUSTER ALLOCATION (DEFAULT 34 / 33 / 33 — MUST SUM TO 100)</p>
+              <div class="alloc-grid">
+                <div class="form-group">
+                  <label for="alloc_btc">BTC %</label>
+                  <input type="number" id="alloc_btc" class="form-control" value="34" min="0" max="100" required />
+                </div>
+                <div class="form-group">
+                  <label for="alloc_eth">ETH %</label>
+                  <input type="number" id="alloc_eth" class="form-control" value="33" min="0" max="100" required />
+                </div>
+                <div class="form-group">
+                  <label for="alloc_sol">SOL %</label>
+                  <input type="number" id="alloc_sol" class="form-control" value="33" min="0" max="100" required />
+                </div>
               </div>
-              <input type="password" id="api_secret" class="form-control" placeholder="0x..." required />
-            </div>
-          </div>
-  
-          <p class="sec-label" style="margin-top: 28px;">CLUSTER ALLOCATION (MUST SUM TO 100)</p>
-          <div class="alloc-grid">
-            <div class="form-group">
-              <label for="alloc_btc">BTC %</label>
-              <input type="number" id="alloc_btc" class="form-control" value="34" min="0" max="100" required />
-            </div>
-            <div class="form-group">
-              <label for="alloc_eth">ETH %</label>
-              <input type="number" id="alloc_eth" class="form-control" value="33" min="0" max="100" required />
-            </div>
-            <div class="form-group">
-              <label for="alloc_sol">SOL %</label>
-              <input type="number" id="alloc_sol" class="form-control" value="33" min="0" max="100" required />
-            </div>
-          </div>
-  
-          <div style="margin-top: 36px;">
-            <button type="submit" id="submitBtn" class="btn btn-primary">[AUTHORIZE & PROVISION NODE]</button>
-          </div>
-        </form>
+      
+              <div style="margin-top: 36px;">
+                <button type="submit" id="submitBtn" class="btn btn-primary">[ENCRYPT KEYS & CONTINUE TO TELEGRAM]</button>
+              </div>
+            </form>
+        </div>
       </section>
 
     </main>
@@ -547,156 +524,112 @@
       </div>
       <div>
         <strong>Contact</strong>
-        <p>Telegram only. <a href="https://t.me/TrustAlgo_Terminal_Bot">Request a node</a>. Do not send a private key in the first message.</p>
+        <p>Telegram only for support. <a href="https://t.me/TrustAlgo_Terminal_Bot">Contact operator</a>. All node provisioning is handled via the secure form above.</p>
       </div>
       <p class="risk">Execution can lose capital. This page is not investment advice, not a solicitation, and not an offer of a managed account. You authorize the API wallet. You can revoke it.</p>
     </footer>
   </div>
 
-  <!-- MODAL PER L'APPROVAZIONE WEB3 -->
-  <div id="web3Modal" class="modal-overlay">
-    <div class="modal-content">
-      <h3>Billing Authorization Required</h3>
-      <p>To complete the node provisioning, you must authorize the TrustAlgo Smart Contract to deduct performance fees.</p>
-      <p>Your Web3 wallet (MetaMask, Rabby, etc.) will ask you to sign an <strong>Approve</strong> transaction for USDC on the <strong>Arbitrum One</strong> network.</p>
-      <div class="note" style="margin-top: 0; margin-bottom: 8px;">
-        This does not move any funds now. It only sets a maximum limit the contract can pull in the future.
-      </div>
-      <div class="modal-actions">
-        <button type="button" class="btn btn-ghost" onclick="cancelWeb3Flow()">Cancel</button>
-        <button type="button" id="proceedWeb3Btn" class="btn btn-primary" onclick="executeWeb3Approval()">Proceed to Wallet</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- SCRIPT DI GESTIONE FLUSSO (ONBOARDING API + WEB3 APPROVE) -->
+  <!-- SCRIPT DI GESTIONE FLUSSO CON DEEP LINK TELEGRAM AUTOMATICO -->
   <script>
-    let onboardingPayload = null;
+    function validateWallet(input) {
+        const val = input.value.trim();
+        const err = document.getElementById('wallet_error');
+        if(val.length > 0 && val.length !== 42) {
+            err.style.display = 'block';
+            input.style.borderColor = 'var(--warn)';
+        } else {
+            err.style.display = 'none';
+            input.style.borderColor = 'var(--line-soft)';
+        }
+    }
 
-    // 1. Intercetta il form e salva i dati
-    function handleOnboardingFlow(event) {
+    function validateKey(input) {
+        const val = input.value.trim();
+        const err = document.getElementById('key_error');
+        if(val.length > 0 && val.length < 60) {
+            err.style.display = 'block';
+            input.style.borderColor = 'var(--warn)';
+        } else {
+            err.style.display = 'none';
+            input.style.borderColor = 'var(--line-soft)';
+        }
+    }
+
+    async function submitToBackend(event) {
         event.preventDefault();
         
-        onboardingPayload = {
-            alias: document.getElementById('alias').value,
-            telegram_id: document.getElementById('telegram_id').value,
-            api_key: document.getElementById('api_key').value,
-            api_secret: document.getElementById('api_secret').value,
-            alloc_btc: parseFloat(document.getElementById('alloc_btc').value),
-            alloc_eth: parseFloat(document.getElementById('alloc_eth').value),
-            alloc_sol: parseFloat(document.getElementById('alloc_sol').value)
-        };
+        const walletAddress = document.getElementById('api_key').value.trim();
+        const privateKey = document.getElementById('api_secret').value.trim();
+        const allocBtc = parseFloat(document.getElementById('alloc_btc').value);
+        const allocEth = parseFloat(document.getElementById('alloc_eth').value);
+        const allocSol = parseFloat(document.getElementById('alloc_sol').value);
 
-        // Somma allocazioni check locale
-        const total = onboardingPayload.alloc_btc + onboardingPayload.alloc_eth + onboardingPayload.alloc_sol;
-        if(Math.round(total) !== 100) {
+        if(walletAddress.length !== 42) {
+            alert('❌ Main Wallet Address format is invalid (must be 42 characters).');
+            return;
+        }
+        if(privateKey.length < 60) {
+            alert('❌ API Private Key format is invalid. Did you paste an address instead?');
+            return;
+        }
+        if(Math.round(allocBtc + allocEth + allocSol) !== 100) {
             alert('❌ The allocation percentages must sum up to exactly 100%.');
             return;
         }
 
-        // Mostra il modal Web3
-        document.getElementById('web3Modal').classList.add('active');
-    }
+        const onboardingPayload = {
+            api_key: walletAddress,
+            api_secret: privateKey,
+            alloc_btc: allocBtc,
+            alloc_eth: allocEth,
+            alloc_sol: allocSol
+        };
 
-    function cancelWeb3Flow() {
-        document.getElementById('web3Modal').classList.remove('active');
-        onboardingPayload = null;
-    }
-
-    // 2. Esegue la transazione di Approve su Arbitrum
-    async function executeWeb3Approval() {
-        const btnWeb3 = document.getElementById('proceedWeb3Btn');
         const formBtn = document.getElementById('submitBtn');
-        
-        if (typeof window.ethereum === 'undefined') {
-            alert("❌ Web3 provider not found. Please install MetaMask, Rabby, or use a Web3-enabled browser.");
-            return;
-        }
-
-        try {
-            btnWeb3.textContent = "Awaiting Signature...";
-            btnWeb3.disabled = true;
-
-            // Richiedi connessione al wallet
-            await window.ethereum.request({ method: 'eth_requestAccounts' });
-            
-            // Verifica rete Arbitrum One (ChainID: 0xa4b1 o 42161)
-            const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-            if (chainId !== '0xa4b1' && chainId !== '42161' && chainId !== '0xA4B1') {
-                try {
-                    await window.ethereum.request({
-                        method: 'wallet_switchEthereumChain',
-                        params: [{ chainId: '0xa4b1' }],
-                    });
-                } catch (switchError) {
-                    alert("❌ Please switch your wallet to the Arbitrum One network manually and try again.");
-                    throw new Error("Wrong Network");
-                }
-            }
-
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const signer = provider.getSigner();
-
-            // COSTANTI SMART CONTRACT
-            const usdcAddress = "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"; // Arbitrum USDC
-            const trustAlgoContract = "0x679a63184230209583DC08E8CE35411089679DbF"; // IL TUO CONTRATTO DEPLOYATO
-            const abi = ["function approve(address spender, uint256 amount) public returns (bool)"];
-            
-            const usdcContract = new ethers.Contract(usdcAddress, abi, signer);
-
-            // Approva un limite alto per non doverlo rifare ogni mese (es. 100,000 USDC)
-            // USDC ha 6 decimali, ethers.utils.parseUnits gestisce la conversione
-            const maxApproval = ethers.utils.parseUnits("100000", 6); 
-
-            console.log("Richiesta firma a MetaMask per Approve...");
-            const tx = await usdcContract.approve(trustAlgoContract, maxApproval);
-            
-            btnWeb3.textContent = "Confirming Tx...";
-            await tx.wait(); // Attende che il blocco venga minato
-            
-            // Chiude il modal
-            document.getElementById('web3Modal').classList.remove('active');
-            
-            // 3. Procede con la chiamata API al backend
-            await submitToBackend(formBtn);
-            
-        } catch (error) {
-            console.error(error);
-            if(error.code === 4001) {
-                alert("❌ Transaction rejected by user.");
-            } else if (error.message !== "Wrong Network") {
-                alert("❌ An error occurred during the blockchain transaction. Please try again.");
-            }
-            btnWeb3.textContent = "Proceed to Wallet";
-            btnWeb3.disabled = false;
-        }
-    }
-
-    // 3. Invia i dati in POST a FastAPI
-    async function submitToBackend(formBtn) {
         formBtn.textContent = "[PROCESSING SECURE HANDSHAKE...]";
         formBtn.disabled = true;
 
         try {
-            // Nota: Assicurati che l'URL del tuo backend sia corretto qui sotto
             const response = await fetch('https://api.trustalgo.co/api/onboard', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(onboardingPayload)
             });
 
-            const data = await response.json();
-
             if (response.ok) {
-                alert('✅ Success!\n\n1. Web3 Billing Authorized.\n2. Node provisioned and keys encrypted.\n\nPlease open the TrustAlgo Telegram Bot and type /start to complete your profile.');
-                document.getElementById('onboardingForm').reset();
+                const tgDeepLink = `https://t.me/TrustAlgo_Terminal_Bot?start=${walletAddress}`;
+                
+                const formContainer = document.getElementById('formContainer');
+                formContainer.innerHTML = `
+                    <div style="border: 1px solid var(--accent); background: rgba(121, 184, 184, 0.05); padding: 42px 28px; text-align: center;">
+                        <h3 style="color: var(--accent-2); margin-bottom: 16px; font-size: 20px;">✅ Step 1 Complete: Keys Encrypted</h3>
+                        <p style="color: var(--muted); margin-bottom: 28px; font-size: 14px; max-width: 520px; margin-left: auto; margin-right: auto;">
+                            Redirecting you to Telegram to automatically capture your Telegram ID and link your node.<br><br>
+                            <strong>Simply press "START" (Avvia) inside the Telegram bot.</strong>
+                        </p>
+                        <a href="${tgDeepLink}" target="_blank" class="btn btn-primary" style="font-size: 14px; padding: 16px 24px;">[ OPEN TELEGRAM & PRESS START ]</a>
+                    </div>
+                `;
+
+                // Tenta anche l'apertura automatica immediata del bot Telegram
+                setTimeout(() => {
+                    window.location.href = tgDeepLink;
+                }, 800);
+
             } else {
-                alert('❌ API Error: ' + data.detail);
+                try {
+                    const data = await response.json();
+                    alert('❌ API Error: ' + (data.detail || 'Unknown error occurred.'));
+                } catch(e) {
+                    alert('❌ API Error: Server returned an unexpected response format.');
+                }
+                formBtn.textContent = "[ENCRYPT KEYS & CONTINUE TO TELEGRAM]";
+                formBtn.disabled = false;
             }
         } catch (error) {
             alert('❌ Network Error: Unable to reach TrustAlgo proxy server. Please ensure the backend is running.');
-        } finally {
-            formBtn.textContent = "[AUTHORIZE & PROVISION NODE]";
+            formBtn.textContent = "[ENCRYPT KEYS & CONTINUE TO TELEGRAM]";
             formBtn.disabled = false;
         }
     }
