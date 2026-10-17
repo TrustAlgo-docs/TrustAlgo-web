@@ -137,7 +137,6 @@
     .principles strong { font-family: "JetBrains Mono", monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--accent-2); }
     .principles p { color: var(--muted); font-size: 14px; }
     
-    /* Blocco CSS per il Form di Onboarding */
     .form-section {
       margin: 28px 0 64px; border: 1px solid var(--line);
       padding: 36px 28px; background: linear-gradient(120deg, rgba(121,184,184,0.05), transparent 42%), rgba(12,14,18,0.8);
@@ -407,15 +406,15 @@
           <article class="step">
             <div class="n">04</div>
             <div>
-              <h3>Name it, then generate</h3>
-              <p>Enter a name, for example trustalgo. Click Generate. A named wallet is easier to track. An account can keep one unnamed API wallet and up to three named ones. Approving a new wallet with the same name replaces the previous one.</p>
+              <h3>Name it, then Generate</h3>
+              <p>Enter a name (e.g., trustalgo). <strong style="color: var(--accent-2); font-weight: 500;">Ignore the 42-character address that auto-fills in the box.</strong> Click the green "Generate" text on the right. The screen will dim and a popup dialog will appear in the center.</p>
             </div>
           </article>
           <article class="step">
             <div class="n">05</div>
             <div>
-              <h3>Copy the private key, then authorize</h3>
-              <p>The dialog shows the private key once. Copy it into a password manager before you authorize. Then click Authorize API Wallet and sign with the master wallet. Default validity is 90 days. The maximum is 180 days. Hyperliquid will not show the key again.</p>
+              <h3>Copy the 66-character Private Key</h3>
+              <p>Inside that popup, you will see the actual Secret Private Key (64 or 66 characters). <strong>Copy this exact string immediately.</strong> Hyperliquid will never show it again once you close the window. After copying, click "Authorize API Wallet" to sign with your master wallet.</p>
             </div>
           </article>
           <article class="step">
@@ -438,15 +437,15 @@
         <div class="principles">
           <div>
             <strong>1. TRANSMISSION</strong>
-            <p><strong>Encrypted tunnel.</strong> When you enter the private key on the site, the data does not travel over the public internet. The connection uses an encrypted TLS tunnel (Cloudflare Tunnel) that routes the payload directly to the isolated backend.</p>
+            <p><strong>Encrypted TLS proxy.</strong> When you enter the private key on the site, the payload is transmitted over an encrypted HTTPS/TLS 1.3 connection directly to the isolated onboarding proxy.</p>
           </div>
           <div>
             <strong>2. CRYPTOGRAPHY</strong>
-            <p><strong>Immediate AES-256-GCM.</strong> As soon as the server receives the payload, the API key is instantly encrypted in memory using the AES-256-GCM (Authenticated Encryption with Associated Data) standard. The system does not execute any plaintext logging of the key.</p>
+            <p><strong>Immediate in-memory encryption.</strong> As soon as the server validates the L1 handshake, the API key is instantly encrypted in memory using authenticated symmetric cryptography. The system executes zero plaintext logging of the key.</p>
           </div>
           <div>
             <strong>3. STORAGE</strong>
-            <p><strong>Zero-knowledge database.</strong> The TrustAlgo PostgreSQL database strictly stores three encrypted strings: the ciphertext, the initialization vector (IV), and an authentication tag. The Master Key required to decode this data is physically isolated and does not reside in the database.</p>
+            <p><strong>Zero-plaintext database.</strong> The TrustAlgo PostgreSQL database strictly stores the encrypted token. The Master Key required to decode this data is physically isolated in the server environment and does not reside in the database.</p>
           </div>
           <div>
             <strong>4. EXECUTION</strong>
@@ -458,11 +457,19 @@
       <section id="onboarding" class="form-section">
         <p class="sec-label">06 — ONBOARDING</p>
         <h2>Secure Node Provisioning.</h2>
-        <p class="lede">Connect your Hyperliquid Agent credentials. Your keys are encrypted immediately in memory. In the next step, Telegram will open automatically to link your profile without manual ID entry.</p>
+        <p class="lede">Enter your entity or personal name and connect your Hyperliquid Agent credentials. Upon submission, a single-use cryptographic token will redirect you to Telegram to link your account and activate your client terminal.</p>
         
         <div id="formContainer">
             <form id="onboardingForm" onsubmit="submitToBackend(event)">
               <div class="form-grid">
+
+                <div class="form-group">
+                  <label for="client_name">Full Name or Company / Entity Name</label>
+                  <div class="helper-text">
+                    Your personal name (First & Last Name) or the name of your company/fund associated with this wallet.
+                  </div>
+                  <input type="text" id="client_name" class="form-control" placeholder="e.g. Mario Rossi / Alpha Quant S.r.l." required />
+                </div>
       
                 <div class="form-group">
                   <label for="api_key">Main Wallet Address</label>
@@ -530,7 +537,6 @@
     </footer>
   </div>
 
-  <!-- SCRIPT DI GESTIONE FLUSSO CON DEEP LINK TELEGRAM AUTOMATICO -->
   <script>
     function validateWallet(input) {
         const val = input.value.trim();
@@ -559,12 +565,17 @@
     async function submitToBackend(event) {
         event.preventDefault();
         
+        const clientName = document.getElementById('client_name').value.trim();
         const walletAddress = document.getElementById('api_key').value.trim();
         const privateKey = document.getElementById('api_secret').value.trim();
         const allocBtc = parseFloat(document.getElementById('alloc_btc').value);
         const allocEth = parseFloat(document.getElementById('alloc_eth').value);
         const allocSol = parseFloat(document.getElementById('alloc_sol').value);
 
+        if(clientName.length < 2) {
+            alert('❌ Please enter your Full Name or Company Name.');
+            return;
+        }
         if(walletAddress.length !== 42) {
             alert('❌ Main Wallet Address format is invalid (must be 42 characters).');
             return;
@@ -579,6 +590,7 @@
         }
 
         const onboardingPayload = {
+            client_name: clientName,
             api_key: walletAddress,
             api_secret: privateKey,
             alloc_btc: allocBtc,
@@ -597,33 +609,30 @@
                 body: JSON.stringify(onboardingPayload)
             });
 
-            if (response.ok) {
-                const tgDeepLink = `https://t.me/TrustAlgo_Terminal_Bot?start=${walletAddress}`;
+            const data = await response.json();
+
+            if (response.ok && data.token) {
+                const tgDeepLink = `https://t.me/TrustAlgo_Terminal_Bot?start=${data.token}`;
                 
                 const formContainer = document.getElementById('formContainer');
                 formContainer.innerHTML = `
                     <div style="border: 1px solid var(--accent); background: rgba(121, 184, 184, 0.05); padding: 42px 28px; text-align: center;">
                         <h3 style="color: var(--accent-2); margin-bottom: 16px; font-size: 20px;">✅ Step 1 Complete: Keys Encrypted</h3>
                         <p style="color: var(--muted); margin-bottom: 28px; font-size: 14px; max-width: 520px; margin-left: auto; margin-right: auto;">
-                            Redirecting you to Telegram to automatically capture your Telegram ID and link your node.<br><br>
+                            Welcome, <strong>${clientName}</strong>.<br>
+                            Redirecting you to Telegram to automatically link your Telegram ID and activate your Client Terminal.<br><br>
                             <strong>Simply press "START" (Avvia) inside the Telegram bot.</strong>
                         </p>
                         <a href="${tgDeepLink}" target="_blank" class="btn btn-primary" style="font-size: 14px; padding: 16px 24px;">[ OPEN TELEGRAM & PRESS START ]</a>
                     </div>
                 `;
 
-                // Tenta anche l'apertura automatica immediata del bot Telegram
                 setTimeout(() => {
                     window.location.href = tgDeepLink;
                 }, 800);
 
             } else {
-                try {
-                    const data = await response.json();
-                    alert('❌ API Error: ' + (data.detail || 'Unknown error occurred.'));
-                } catch(e) {
-                    alert('❌ API Error: Server returned an unexpected response format.');
-                }
+                alert('❌ API Error: ' + (data.detail || 'Unable to generate session token.'));
                 formBtn.textContent = "[ENCRYPT KEYS & CONTINUE TO TELEGRAM]";
                 formBtn.disabled = false;
             }
