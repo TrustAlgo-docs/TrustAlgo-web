@@ -42,7 +42,7 @@
     }
     .card-box {
       position: relative; z-index: 1;
-      max-width: 540px; width: 100%;
+      max-width: 560px; width: 100%;
       border: 1px solid var(--line);
       background: var(--panel);
       padding: 38px 32px;
@@ -55,7 +55,7 @@
       font-family: "JetBrains Mono", monospace; color: var(--accent);
       letter-spacing: 0.18em; font-size: 11px; text-transform: uppercase; margin-bottom: 10px;
     }
-    h1 { font-size: 26px; font-weight: 500; color: var(--accent-2); margin-bottom: 14px; letter-spacing: -0.02em; }
+    h1 { font-size: 25px; font-weight: 500; color: var(--accent-2); margin-bottom: 14px; letter-spacing: -0.02em; }
     p { color: var(--muted); font-size: 14px; font-weight: 300; margin-bottom: 16px; }
     .spec-box {
       border: 1px solid var(--line-soft); background: rgba(0,0,0,0.35);
@@ -73,14 +73,14 @@
       font-family: "JetBrains Mono", monospace; font-size: 12px;
       letter-spacing: 0.08em; text-transform: uppercase;
       padding: 15px 18px; border: 1px solid transparent; cursor: pointer; display: block;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .btn-primary { background: var(--accent); color: #071011; font-weight: 500; }
     .btn-primary:hover { background: transparent; color: var(--accent); border-color: var(--accent); }
     .btn-ghost { background: transparent; color: var(--text); border-color: var(--line-soft); }
     .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
     .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    #mobileHelper { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line-soft); }
+    #mobileHelper { display: none; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line-soft); }
   </style>
 </head>
 <body>
@@ -92,11 +92,12 @@
     </a>
     <p class="kicker">ARBITRUM ONE · L2 SETTLEMENT</p>
     <h1>Smart Contract Billing Authorization</h1>
-    <p>To finalize your node setup and enable automated quarterly High-Water Mark (HWM) performance fee settlement, authorize the TrustAlgo Billing Smart Contract on the <strong>Arbitrum One</strong> network.</p>
+    <p>Authorize the TrustAlgo Billing Smart Contract on <strong>Arbitrum One</strong> using any Web3 wallet (<strong>Rabby, MetaMask, Trust Wallet, Brave, Coinbase, Phantom</strong>).</p>
 
     <div class="spec-box">
       <div><span>NETWORK</span><strong>Arbitrum One (42161)</strong></div>
       <div><span>ASSET</span><strong>USDC (Native)</strong></div>
+      <div><span>WALLETS</span><strong>Rabby / MetaMask / Any EVM</strong></div>
       <div><span>CONTRACT</span><strong>0x679a...9DbF</strong></div>
     </div>
 
@@ -105,33 +106,43 @@
     </div>
 
     <button id="approveBtn" class="btn btn-primary" onclick="executeWeb3Approval()">
-      [ CONNECT WALLET & AUTHORIZE USDC ]
+      [ CONNECT WEB3 WALLET & AUTHORIZE USDC ]
     </button>
 
     <div id="mobileHelper">
-      <p style="font-size: 12px; color: var(--warn); margin-bottom: 10px;">
-        ⚠ Opening this link inside Telegram or Safari Mobile does not provide a Web3 wallet connection. Click below to open this page directly inside the MetaMask App:
+      <p style="font-size: 12px; color: var(--warn); margin-bottom: 12px;">
+        ⚠ Standard mobile browsers (Telegram/Safari) do not inject a Web3 wallet. Open this page inside your wallet's built-in browser:
       </p>
       <a href="https://metamask.app.link/dapp/trustalgo.co/billing.html" class="btn btn-ghost">
-        [ OPEN IN METAMASK MOBILE APP ]
+        [ OPEN IN METAMASK MOBILE ]
       </a>
+      <a href="https://link.trustwallet.com/open_url?coin_id=60&url=https%3A%2F%2Ftrustalgo.co%2Fbilling.html" class="btn btn-ghost">
+        [ OPEN IN TRUST WALLET MOBILE ]
+      </a>
+      <button type="button" class="btn btn-ghost" onclick="copyBillingUrl(this)">
+        [ COPY LINK FOR RABBY / OTHER WALLETS ]
+      </button>
     </div>
   </div>
 
   <script>
-    // Mostra subito il pulsante rapido per MetaMask Mobile se non rileva window.ethereum
     window.addEventListener('load', () => {
       if (typeof window.ethereum === 'undefined') {
         document.getElementById('mobileHelper').style.display = 'block';
       }
     });
 
+    function copyBillingUrl(btn) {
+      navigator.clipboard.writeText("https://trustalgo.co/billing.html");
+      btn.textContent = "[ ✅ LINK COPIED — PASTE IN YOUR WALLET BROWSER ]";
+    }
+
     async function executeWeb3Approval() {
       const btn = document.getElementById('approveBtn');
 
       if (typeof window.ethereum === 'undefined') {
         document.getElementById('mobileHelper').style.display = 'block';
-        alert("Web3 wallet not detected in this browser. If you are on mobile, tap '[ OPEN IN METAMASK MOBILE APP ]' below, or open trustalgo.co/billing.html from your PC with MetaMask/Rabby.");
+        alert("No Web3 wallet detected in this browser. Use one of the mobile options below or open trustalgo.co/billing.html on a browser with Rabby, MetaMask, or another Web3 wallet installed.");
         return;
       }
 
@@ -142,7 +153,6 @@
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         const userWallet = accounts[0];
 
-        // Verifica e cambio automatico su rete Arbitrum One (0xa4b1 / 42161)
         const chainId = await window.ethereum.request({ method: 'eth_chainId' });
         if (chainId !== '0xa4b1' && chainId !== '42161' && chainId !== '0xA4B1') {
           try {
@@ -152,7 +162,7 @@
             });
           } catch (switchError) {
             alert("Please switch your wallet network to Arbitrum One and try again.");
-            btn.textContent = "[ CONNECT WALLET & AUTHORIZE USDC ]";
+            btn.textContent = "[ CONNECT WEB3 WALLET & AUTHORIZE USDC ]";
             btn.disabled = false;
             return;
           }
@@ -174,7 +184,6 @@
         btn.textContent = "[ CONFIRMING ON ARBITRUM L2... ]";
         await tx.wait();
 
-        // Notifica il backend dell'avvenuta autorizzazione
         try {
           await fetch('https://api.trustalgo.co/api/billing_ack', {
             method: 'POST',
@@ -203,7 +212,7 @@
         } else {
           alert("❌ Error during transaction. Ensure you have a small amount of ETH on Arbitrum One for gas fees.");
         }
-        btn.textContent = "[ CONNECT WALLET & AUTHORIZE USDC ]";
+        btn.textContent = "[ CONNECT WEB3 WALLET & AUTHORIZE USDC ]";
         btn.disabled = false;
       }
     }
