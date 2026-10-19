@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TrustAlgo | Smart Contract Billing Authorization</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="TrustAlgo | Smart Contract Billing" />
+  <meta property="og:description" content="Quarterly High-Water Mark performance fee settlement on Arbitrum One." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -12,7 +16,7 @@
     :root {
       --bg: #07080A;
       --bg-2: #0C0E12;
-      --panel: rgba(14, 17, 22, 0.82);
+      --panel: rgba(14, 17, 22, 0.85);
       --line: rgba(121, 184, 184, 0.22);
       --line-soft: rgba(226, 232, 240, 0.08);
       --accent: #79B8B8;
@@ -39,70 +43,113 @@
         linear-gradient(rgba(121,184,184,0.035) 1px, transparent 1px),
         linear-gradient(90deg, rgba(121,184,184,0.035) 1px, transparent 1px);
       background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse at 50% 20%, black 20%, transparent 75%);
+    }
+    .glow {
+      position: fixed; width: 640px; height: 380px; left: 50%; top: -60px;
+      transform: translateX(-50%);
+      background: radial-gradient(ellipse, rgba(121,184,184,0.14), transparent 68%);
+      pointer-events: none; z-index: 0;
     }
     .card-box {
       position: relative; z-index: 1;
       max-width: 560px; width: 100%;
       border: 1px solid var(--line);
       background: var(--panel);
+      backdrop-filter: blur(8px);
       padding: 38px 32px;
       box-shadow: 0 0 32px rgba(121, 184, 184, 0.08);
     }
-    .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; text-decoration: none; color: inherit; }
-    .mark { width: 42px; height: 42px; object-fit: contain; }
+    .brand {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 28px; text-decoration: none; color: inherit;
+    }
+    .mark {
+      width: 44px; height: 44px; object-fit: contain;
+      filter: drop-shadow(0 0 12px rgba(121, 184, 184, 0.22));
+    }
     .brand-name { letter-spacing: 0.28em; font-size: 12px; font-weight: 500; }
     .kicker {
       font-family: "JetBrains Mono", monospace; color: var(--accent);
       letter-spacing: 0.18em; font-size: 11px; text-transform: uppercase; margin-bottom: 10px;
     }
-    h1 { font-size: 25px; font-weight: 500; color: var(--accent-2); margin-bottom: 14px; letter-spacing: -0.02em; }
+    h1 {
+      font-size: 25px; font-weight: 500; color: var(--accent-2);
+      margin-bottom: 14px; letter-spacing: -0.02em;
+    }
     p { color: var(--muted); font-size: 14px; font-weight: 300; margin-bottom: 16px; }
     .spec-box {
       border: 1px solid var(--line-soft); background: rgba(0,0,0,0.35);
-      padding: 14px 16px; margin: 20px 0; font-family: "JetBrains Mono", monospace; font-size: 12px;
+      padding: 14px 16px; margin: 20px 0;
+      font-family: "JetBrains Mono", monospace; font-size: 12px;
     }
-    .spec-box div { display: flex; justify-content: space-between; padding: 4px 0; }
+    .spec-box div {
+      display: flex; justify-content: space-between;
+      padding: 5px 0; border-bottom: 1px solid rgba(226, 232, 240, 0.04);
+    }
+    .spec-box div:last-child { border-bottom: 0; }
     .spec-box span { color: var(--muted); }
     .spec-box strong { color: var(--text); font-weight: 500; }
     .note {
       border: 1px solid var(--line); padding: 12px 14px;
-      font-size: 12px; color: var(--muted); background: rgba(121,184,184,0.05); margin-bottom: 24px;
+      font-size: 12px; color: var(--muted);
+      background: rgba(121,184,184,0.05); margin-bottom: 22px;
     }
+    .note strong { color: var(--accent-2); font-weight: 500; }
     .btn {
       width: 100%; text-align: center; text-decoration: none;
       font-family: "JetBrains Mono", monospace; font-size: 12px;
       letter-spacing: 0.08em; text-transform: uppercase;
-      padding: 15px 18px; border: 1px solid transparent; cursor: pointer; display: block;
-      margin-bottom: 10px;
+      padding: 15px 18px; border: 1px solid transparent;
+      cursor: pointer; display: block; margin-bottom: 10px;
+      transition: all 0.2s ease;
     }
     .btn-primary { background: var(--accent); color: #071011; font-weight: 500; }
     .btn-primary:hover { background: transparent; color: var(--accent); border-color: var(--accent); }
     .btn-ghost { background: transparent; color: var(--text); border-color: var(--line-soft); }
     .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
     .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    #mobileHelper { display: none; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line-soft); }
+    #mobileHelper {
+      display: none; margin-top: 18px; padding-top: 16px;
+      border-top: 1px solid var(--line-soft);
+    }
+    .manual-box {
+      margin-top: 18px; padding-top: 16px;
+      border-top: 1px solid var(--line-soft);
+      font-size: 12px; color: var(--muted);
+    }
+    @media (max-width: 520px) {
+      .card-box { padding: 28px 20px; }
+      h1 { font-size: 22px; }
+    }
   </style>
 </head>
 <body>
   <div class="grid"></div>
+  <div class="glow"></div>
+
   <div class="card-box" id="mainContainer">
     <a class="brand" href="https://trustalgo.co">
       <img class="mark" src="logo.png" alt="TrustAlgo Logo" />
       <span class="brand-name">TRUSTALGO</span>
     </a>
+
     <p class="kicker">ARBITRUM ONE · L2 SETTLEMENT</p>
     <h1>Smart Contract Billing Authorization</h1>
-    <p>Authorize the TrustAlgo Billing Smart Contract on <strong>Arbitrum One</strong> using any Web3 wallet (<strong>Rabby, MetaMask, Trust Wallet, Brave, Coinbase, Phantom</strong>).</p>
+    <p>
+      Authorize the TrustAlgo Billing Smart Contract on <strong>Arbitrum One</strong> using your Web3 wallet
+      (<strong>Rabby, MetaMask, Trust Wallet, Brave, Coinbase, Phantom</strong>).
+    </p>
 
     <div class="spec-box">
       <div><span>NETWORK</span><strong>Arbitrum One (42161)</strong></div>
       <div><span>ASSET</span><strong>USDC (Native)</strong></div>
-      <div><span>WALLETS</span><strong>Rabby / MetaMask / Any EVM</strong></div>
+      <div><span>FEE MODEL</span><strong>20% High-Water Mark (Quarterly)</strong></div>
       <div><span>CONTRACT</span><strong>0x679a...9DbF</strong></div>
     </div>
 
     <div class="note">
-      <strong>Zero immediate charge:</strong> Signing the <code>Approve</code> transaction does not transfer any funds today. It only authorizes the smart contract to pull settled performance fees at the end of each profitable quarter.
+      <strong>Zero immediate charge:</strong> Signing the <code>Approve</code> transaction moves zero funds today. It only grants permission to pull settled performance fees at the end of a profitable quarter.
     </div>
 
     <button id="approveBtn" class="btn btn-primary" onclick="executeWeb3Approval()">
@@ -111,7 +158,7 @@
 
     <div id="mobileHelper">
       <p style="font-size: 12px; color: var(--warn); margin-bottom: 12px;">
-        ⚠ Standard mobile browsers (Telegram/Safari) do not inject a Web3 wallet. Open this page inside your wallet's built-in browser:
+        ⚠ Standard mobile browsers (Telegram / Safari) do not inject a Web3 wallet. Open this page inside your wallet's built-in browser:
       </p>
       <a href="https://metamask.app.link/dapp/trustalgo.co/billing.html" class="btn btn-ghost">
         [ OPEN IN METAMASK MOBILE ]
@@ -122,6 +169,15 @@
       <button type="button" class="btn btn-ghost" onclick="copyBillingUrl(this)">
         [ COPY LINK FOR RABBY / OTHER WALLETS ]
       </button>
+    </div>
+
+    <div class="manual-box">
+      <strong>Prefer manual payments?</strong> You do not have to sign this Smart Contract. You can close this page and settle quarterly invoices manually via the Telegram Terminal using the <code>/settle</code> command.
+      <div style="margin-top: 12px;">
+        <a href="https://t.me/TrustAlgo_Terminal_Bot" class="btn btn-ghost" style="margin-bottom: 0;">
+          [ RETURN TO TELEGRAM TERMINAL ]
+        </a>
+      </div>
     </div>
   </div>
 
@@ -153,6 +209,7 @@
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         const userWallet = accounts[0];
 
+        // Verifica e switch automatico su rete Arbitrum One (ChainID 42161 / 0xa4b1)
         const chainId = await window.ethereum.request({ method: 'eth_chainId' });
         if (chainId !== '0xa4b1' && chainId !== '42161' && chainId !== '0xA4B1') {
           try {
@@ -161,10 +218,30 @@
               params: [{ chainId: '0xa4b1' }],
             });
           } catch (switchError) {
-            alert("Please switch your wallet network to Arbitrum One and try again.");
-            btn.textContent = "[ CONNECT WEB3 WALLET & AUTHORIZE USDC ]";
-            btn.disabled = false;
-            return;
+            if (switchError.code === 4902) {
+              try {
+                await window.ethereum.request({
+                  method: 'wallet_addEthereumChain',
+                  params: [{
+                    chainId: '0xa4b1',
+                    chainName: 'Arbitrum One',
+                    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+                    rpcUrls: ['https://arb1.arbitrum.io/rpc'],
+                    blockExplorerUrls: ['https://arbiscan.io']
+                  }]
+                });
+              } catch (addError) {
+                alert("Please switch your wallet network to Arbitrum One manually and try again.");
+                btn.textContent = "[ CONNECT WEB3 WALLET & AUTHORIZE USDC ]";
+                btn.disabled = false;
+                return;
+              }
+            } else {
+              alert("Please switch your wallet network to Arbitrum One and try again.");
+              btn.textContent = "[ CONNECT WEB3 WALLET & AUTHORIZE USDC ]";
+              btn.disabled = false;
+              return;
+            }
           }
         }
 
@@ -198,7 +275,7 @@
           <div style="text-align: center; padding: 20px 0;">
             <h1 style="color: var(--accent-2); margin-bottom: 14px;">✅ Billing Contract Authorized</h1>
             <p style="margin-bottom: 24px;">
-              Your Arbitrum USDC allowance has been confirmed on-chain.<br>
+              Your Arbitrum One USDC allowance has been confirmed on-chain.<br>
               Transaction Hash:<br>
               <code style="color: var(--accent); font-size: 11px; word-break: break-all;">${tx.hash}</code>
             </p>
