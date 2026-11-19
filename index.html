@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TrustAlgo | Quantitative Infrastructure</title>
+  <title>TrustAlgo | Systematic trading on Hyperliquid</title>
   <link rel="icon" type="image/png" href="logo.png" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="TrustAlgo | Hyperliquid Execution Proxy" />
-  <meta property="og:description" content="Non-custodial quantitative execution on Hyperliquid. One book. Intake is limited." />
+  <meta property="og:title" content="TrustAlgo | Systematic trading on Hyperliquid" />
+  <meta property="og:description" content="Systematic trading models on your own Hyperliquid account. Non-custodial: the API wallet can trade, it cannot withdraw. Every live trade is published." />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="TrustAlgo | Hyperliquid Execution Proxy" />
-  <meta name="twitter:description" content="Non-custodial quantitative execution on Hyperliquid. One book. Intake is limited." />
+  <meta name="twitter:title" content="TrustAlgo | Systematic trading on Hyperliquid" />
+  <meta name="twitter:description" content="Systematic trading models on your own Hyperliquid account. Non-custodial: the API wallet can trade, it cannot withdraw. Every live trade is published." />
   <meta property="og:image" content="https://trustalgo.co/og-home.png" />
   <meta property="og:image:width" content="2400" />
   <meta property="og:image:height" content="1260" />
   <meta name="twitter:image" content="https://trustalgo.co/og-home.png" />
-  <meta name="description" content="TrustAlgo is a boutique quantitative execution firm. Non-custodial execution infrastructure built only for Hyperliquid." />
+  <meta name="description" content="Systematic trading models on your own Hyperliquid account. Non-custodial: the API wallet can trade, it cannot withdraw. Every live trade is published." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -239,6 +239,34 @@
     }
     .principles a{color:var(--accent);text-decoration:none;white-space:nowrap}
     .principles a:hover{text-decoration:underline}
+
+    .track { margin-top: 6px; }
+    .track .node span strong { color: var(--accent-2); font-weight: 500; }
+    .panel-foot { margin-top: 14px; font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.06em; }
+    .panel-foot a { color: var(--accent); text-decoration: none; }
+    .card a, .lede a, .fine a, .faq a, .results-links a { color: var(--accent); text-decoration: none; }
+    .card a:hover, .lede a:hover, .faq a:hover, .results-links a:hover { text-decoration: underline; }
+    .tr-wrap { overflow-x: auto; border: 1px solid var(--line-soft); background: rgba(12,14,18,0.65); }
+    table.tr { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 620px; }
+    table.tr th { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.08em; color: var(--muted); font-weight: 500; text-align: left; padding: 14px 18px; border-bottom: 1px solid var(--line-soft); }
+    table.tr td { padding: 16px 18px; border-bottom: 1px solid var(--line-soft); color: var(--text); font-weight: 300; vertical-align: top; }
+    table.tr tr:last-child td { border-bottom: 0; }
+    table.tr td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    table.tr td.pos { color: var(--accent-2); font-weight: 500; }
+    table.tr td small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+    .results-links { display: flex; flex-wrap: wrap; gap: 10px 24px; margin-top: 16px; font-family: "JetBrains Mono", monospace; font-size: 12px; letter-spacing: 0.04em; }
+    .story p { color: var(--muted); font-weight: 300; font-size: 16px; margin-bottom: 16px; max-width: 620px; }
+    .story p strong { color: var(--text); font-weight: 500; }
+    .story .sign { font-family: "JetBrains Mono", monospace; font-size: 12px; letter-spacing: 0.08em; color: var(--accent); }
+    .faq { border-top: 1px solid var(--line-soft); }
+    .faq details { border-bottom: 1px solid var(--line-soft); }
+    .faq summary { list-style: none; cursor: pointer; padding: 18px 36px 18px 0; font-size: 16px; font-weight: 500; position: relative; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary:after { content: "+"; position: absolute; right: 4px; top: 16px; color: var(--accent); font-family: "JetBrains Mono", monospace; font-size: 18px; }
+    .faq details[open] summary:after { content: "\2013"; }
+    .faq details p { color: var(--muted); font-weight: 300; font-size: 15px; padding: 0 0 18px; max-width: 760px; }
+    .section-gap { padding-top: 56px; }
+    .scope { margin-top: 22px; }
   </style>
 </head>
 <body>
@@ -251,25 +279,24 @@
         <span class="brand-name">TRUSTALGO</span>
       </a>
       <nav>
-        <a class="hide" href="#architecture">Architecture</a>
-        <a class="hide" href="#scope">Scope</a>
+        <a class="hide" href="#how">How it works</a>
+        <a class="hide" href="#results">Results</a>
         <a class="hide" href="#model">Model</a>
-        <a class="hide" href="#setup">Setup</a>
         <a class="hide" href="#security">Security</a>
-        <a class="hide" href="/notes/live-results/">Results</a>
-        <a class="nav-cta" href="#onboarding">Request Node</a>
+        <a class="hide" href="#faq">FAQ</a>
+        <a class="nav-cta" href="#onboarding">Get started</a>
       </nav>
     </header>
 
     <main id="top">
       <section class="hero">
         <div>
-          <p class="kicker">Hyperliquid · systematic trading models</p>
-          <h1>Non-custodial execution<br />on <span>Hyperliquid.</span></h1>
-          <p class="lede">TrustAlgo runs systematic trading models on a single venue: Hyperliquid. They trade from your own account through an API wallet that cannot withdraw. The current model is trend-following on BTC, ETH and SOL. Live results are published every month.</p>
+          <p class="kicker">Hyperliquid · systematic trading</p>
+          <h1>Automated trading<br />on <span>Hyperliquid.</span></h1>
+          <p class="lede">TrustAlgo runs systematic trading models on your own Hyperliquid account. Our API wallet can open and close trades. It cannot withdraw. Your funds stay with you, you can stop at any time, and every live trade is published.</p>
           <div class="actions">
-            <a class="btn btn-primary" href="/notes/live-results/">See live results</a>
-            <a class="btn btn-ghost" href="#onboarding">Request Node</a>
+            <a class="btn btn-primary" href="#results">See live results</a>
+            <a class="btn btn-ghost" href="#onboarding">Get started</a>
           </div>
           <div class="status">
             <span class="dot"></span>
@@ -280,95 +307,90 @@
             <span>MODEL: <span class="hi">TREND v1.0.8</span></span>
           </div>
         </div>
-        <aside class="panel" aria-label="Execution path">
+        <aside class="panel" aria-label="Live track record">
           <div class="panel-top">
-            <span>BOOK // LIVE MODEL</span>
-            <span>HYPERLIQUID ONLY</span>
+            <span>LIVE TRACK RECORD</span>
+            <span>SINCE JUN 2026</span>
           </div>
-          <div class="flow">
-            <div class="node"><b>01 INTENT</b><span>Signed order intent stays with the user.</span></div>
+          <div class="flow track">
+            <div class="node"><b>Q3 2026</b><span><strong>+22.37%</strong> net · 25 trades · max drawdown &minus;2.91%</span></div>
             <div class="rail"></div>
-            <div class="node"><b>02 BOOK</b><span>Model sends to the Hyperliquid order book only.</span></div>
+            <div class="node"><b>1 OCT &ndash; 15 NOV</b><span>15 trades · 4 won, 11 lost · <strong>net positive</strong></span></div>
             <div class="rail"></div>
-            <div class="node"><b>03 SETTLE</b><span>Fills settle on Hyperliquid. TrustAlgo never takes custody.</span></div>
+            <div class="node"><b>PUBLISHED</b><span>Every closed trade, losses included</span></div>
           </div>
+          <p class="panel-foot"><a href="/notes/live-results/">Read the latest report &rarr;</a></p>
         </aside>
 
-        <div class="spec" aria-label="Operating envelope">
+        <div class="spec" aria-label="Key terms">
           <div><span>VENUE</span><strong>Hyperliquid only</strong></div>
-          <div><span>CUSTODY</span><strong>Master wallet</strong></div>
+          <div><span>CUSTODY</span><strong>Your own wallet</strong></div>
           <div><span>FEE</span><strong>20% of new profits</strong></div>
-          <div><span>CAPITAL</span><strong>1,000+ USDC</strong></div>
+          <div><span>MINIMUM</span><strong>1,000 USDC</strong></div>
         </div>
       </section>
 
-      <section id="architecture">
-        <p class="sec-label">01 — INFRASTRUCTURE</p>
-        <h2>Built for one book, not a venue router.</h2>
+      <section id="how" class="section-gap">
+        <p class="sec-label">01 — HOW IT WORKS</p>
+        <h2>Three steps. Your account, your keys.</h2>
         <div class="grid-3">
           <article class="card">
-            <div class="idx">VENUE</div>
-            <h3>Hyperliquid only</h3>
-            <p>The stack is scoped to Hyperliquid. No multi-DEX routing, no second book, no fallback venue.</p>
+            <div class="idx">STEP 01</div>
+            <h3>Fund your Hyperliquid account</h3>
+            <p>Deposit at least 1,000 USDC to your own Hyperliquid account. The funds never move to TrustAlgo.</p>
           </article>
           <article class="card">
-            <div class="idx">CUSTODY</div>
-            <h3>Keys stay local</h3>
-            <p>Non-custodial by design. Assets and signing remain with the operator. The proxy executes; it does not hold.</p>
+            <div class="idx">STEP 02</div>
+            <h3>Authorize an API wallet</h3>
+            <p>Create an API wallet on Hyperliquid and submit its key below. It can place and close orders, it cannot withdraw, and you can revoke it at any time. <a href="/setup/">Step-by-step guide &rarr;</a></p>
           </article>
           <article class="card">
-            <div class="idx">CAPACITY</div>
-            <h3>Capped on purpose</h3>
-            <p>The number of accounts is limited, so orders stay small relative to the Hyperliquid book and fills stay close to the model.</p>
+            <div class="idx">STEP 03</div>
+            <h3>Follow everything on Telegram</h3>
+            <p>The model trades automatically. Your Telegram terminal shows balance, open positions, trade history and a weekly report.</p>
           </article>
         </div>
       </section>
 
-      <section id="scope">
-        <p class="sec-label">02 — SCOPE</p>
-        <h2>What a node is. What it is not.</h2>
-        <p class="lede">A node is an execution seat on your Hyperliquid account. TrustAlgo signs orders with the API wallet you authorize. Collateral and withdrawals stay on the master wallet.</p>
-        <div class="scope">
-          <article>
-            <div class="idx" style="color:var(--accent)">YOU GET</div>
-            <h3>The node</h3>
-            <ul>
-              <li>One execution seat, while intake is open</li>
-              <li>Order flow on the Hyperliquid book only</li>
-              <li>No setup or management fees: 20% performance fee on new profits only</li>
-            </ul>
-          </article>
-          <article>
-            <div class="idx" style="color:var(--accent-2)">YOURS</div>
-            <h3>What stays with you</h3>
-            <ul>
-              <li>Master wallet and withdrawal rights</li>
-              <li>Collateral on Hyperliquid (1,000 USDC min.)</li>
-              <li>Revocation of the API wallet, at any time</li>
-            </ul>
-          </article>
-          <article class="never">
-            <div class="idx" style="color:var(--accent)">NEVER</div>
-            <h3>What TrustAlgo cannot do</h3>
-            <ul>
-              <li>Withdraw or move collateral</li>
-              <li>Trade any venue other than Hyperliquid</li>
-              <li>Recover a private key you did not keep</li>
-            </ul>
-          </article>
+      <section id="results" class="section-gap">
+        <p class="sec-label">02 — LIVE TRACK RECORD</p>
+        <h2>Live results, published as they happen.</h2>
+        <p class="lede">Every number below comes from live trading, not from a backtest. Losing trades are included.</p>
+        <div class="tr-wrap">
+          <table class="tr">
+            <tr><th>PERIOD</th><th>VENUE</th><th>TRADES</th><th>WON / LOST</th><th>NET RESULT</th></tr>
+            <tr>
+              <td>23 Jun &ndash; 29 Sep 2026<small>Q3 2026</small></td>
+              <td>Centralized exchange, then Hyperliquid from 18 Sep</td>
+              <td class="num">25</td><td class="num">10 / 15</td>
+              <td class="num pos">+22.37%<small>max drawdown &minus;2.91%</small></td>
+            </tr>
+            <tr>
+              <td>1 Oct &ndash; 15 Nov 2026</td>
+              <td>Hyperliquid</td>
+              <td class="num">15</td><td class="num">4 / 11</td>
+              <td class="num pos">Positive<small>longest losing streak: 8</small></td>
+            </tr>
+          </table>
+        </div>
+        <p class="fine" style="margin-top:14px;color:var(--muted);font-size:13px;font-weight:300;">Net results include trading fees and exclude funding payments. Q3 drawdown measured on closed trades. Since launch: 40 closed trades, 14 won, 26 lost. That is how the model is designed to work: small losses, fewer but larger wins.</p>
+        <div class="results-links">
+          <a href="/notes/live-results/">Oct &ndash; Nov report &rarr;</a>
+          <a href="/notes/performance-q3.html">Q3 2026 report &rarr;</a>
+          <a href="/notes/by-design/">Why most trades lose &rarr;</a>
         </div>
       </section>
 
-      <section class="split" id="model">
+      <section class="split section-gap" id="model">
         <div>
-          <p class="sec-label">03 — OPERATING MODEL</p>
+          <p class="sec-label">03 — MODELS</p>
           <h2>Systematic models. Frozen and audited.</h2>
           <p class="lede">Every model goes live only after the same process: backtested on years of data, frozen at a version, then audited live against its backtest every month. New models are added only when they pass it.</p>
         </div>
         <div class="principles">
           <div>
             <strong>CURRENT MODEL</strong>
-            <p>Trend v1.0.8: trend-following on BTC, ETH and SOL perpetuals, long and short, on hourly signals. Every position is protected by a stop placed on Hyperliquid. <a href="/notes/by-design/">Why most trades lose &rarr;</a></p>
+            <p>Trend v1.0.8: trend-following on BTC, ETH and SOL perpetuals, long and short, on hourly signals. Every position is protected by a stop placed on Hyperliquid. <a href="/notes/by-design/">How it works &rarr;</a></p>
           </div>
           <div>
             <strong>RISK</strong>
@@ -380,92 +402,125 @@
           </div>
           <div>
             <strong>TRANSPARENCY</strong>
-            <p>Live results are published monthly, every closed trade included. Live is audited against the backtest each month. <a href="/notes/">Read the notes &rarr;</a></p>
+            <p>Live results are published monthly, every closed trade included. Live is audited against the backtest each month. <a href="/notes/live-audit/">Latest audit &rarr;</a></p>
           </div>
         </div>
       </section>
 
-      <section id="setup">
-        <p class="sec-label">04 — SETUP</p>
-        <h2>Connect a wallet. Create an API wallet.</h2>
-        <p class="lede">Hyperliquid does not issue a classic exchange API key. You must first connect your master wallet, <strong style="color: var(--accent-2); font-weight: 500;">deposit USDC from your wallet into the exchange</strong>, and then authorize an API wallet. The API wallet can sign trades. It cannot withdraw.</p>
-        <div class="steps">
-          <article class="step">
-            <div class="n">01</div>
-            <div>
-              <h3>Connect the master wallet</h3>
-              <p>Open <a href="https://app.hyperliquid.xyz" target="_blank" rel="noopener">app.hyperliquid.xyz</a> and connect MetaMask, Rabby, or WalletConnect. Sign the connection request. That signature identifies the account. It does not grant TrustAlgo, or the API wallet, withdrawal rights.</p>
-            </div>
-          </article>
-          <article class="step">
-            <div class="n">02</div>
-            <div>
-              <h3>Deposit USDC to the exchange (1,000 USDC Recommended)</h3>
-              <p><strong style="color: var(--accent-2); font-weight: 500;">Connecting your wallet is not enough.</strong> You must actively transfer USDC from your personal wallet into your Hyperliquid L1 account using the "Deposit" button. While Hyperliquid credits deposits from 5 USDC, <strong style="color: var(--accent-2); font-weight: 500;">a minimum balance of 1,000 USDC is required</strong> for optimal position sizing across BTC, ETH, and SOL minimum lot constraints. Wait until the balance shows on Hyperliquid before creating the API wallet.</p>
-            </div>
-          </article>
-          <article class="step">
-            <div class="n">03</div>
-            <div>
-              <h3>Open the API page</h3>
-              <p>Go to More, then API, or open <a href="https://app.hyperliquid.xyz/API" target="_blank" rel="noopener">app.hyperliquid.xyz/API</a>. An API wallet is an agent wallet: it signs for the master account. Info requests still use the master address, not the agent address.</p>
-            </div>
-          </article>
-          <article class="step">
-            <div class="n">04</div>
-            <div>
-              <h3>Name it, then Generate</h3>
-              <p>Enter a name (e.g., trustalgo). <strong style="color: var(--accent-2); font-weight: 500;">Ignore the 42-character address that auto-fills in the box.</strong> Click the green "Generate" text on the right. The screen will dim and a popup dialog will appear in the center.</p>
-            </div>
-          </article>
-          <article class="step">
-            <div class="n">05</div>
-            <div>
-              <h3>Copy the 66-character Private Key</h3>
-              <p>Inside that popup, you will see the actual Secret Private Key (64 or 66 characters). <strong>Copy this exact string immediately.</strong> Hyperliquid will never show it again once you close the window. After copying, click "Authorize API Wallet" to sign with your master wallet.</p>
-            </div>
-          </article>
-          <article class="step">
-            <div class="n">06</div>
-            <div>
-              <h3>Provision your node</h3>
-              <p>Keep the master address and the API wallet private key separate. The master address is the account. The private key is the signer. Proceed to the secure Onboarding section below to provision your node. You can revoke the API wallet on the Hyperliquid API page at any time.</p>
-            </div>
-          </article>
+      <section class="split section-gap" id="story">
+        <div>
+          <p class="sec-label">04 — WHY TRUSTALGO</p>
+          <h2>Built by a trader, to replace the night alarms.</h2>
         </div>
-        <div class="note"><strong>Scope.</strong> The API wallet can place and manage orders. It cannot withdraw. Withdrawals stay on the master wallet. If the key is lost, generate a new API wallet. Do not reuse a deregistered agent address.</div>
+        <div class="story">
+          <p>TrustAlgo did not start as a product. It started in <strong>2020</strong>, with manual trading on centralized exchanges.</p>
+          <p>Studying and testing strategies turned into a passion. Executing them by hand did not scale: positions had to be watched around the clock, with <strong>alarms set in the middle of the night</strong> just to close a trade.</p>
+          <p>For the past <strong>year and a half</strong>, that work has gone into one goal: turning tested strategies into a system that executes them exactly as designed, day and night, without anyone having to be awake.</p>
+          <p>TrustAlgo is that system, now open to a limited number of accounts.</p>
+          <p class="sign">&mdash; THE FOUNDER</p>
+        </div>
       </section>
 
-      <section class="split" id="security">
+      <section class="split section-gap" id="security">
         <div>
-          <p class="sec-label">05 — SECURITY ARCHITECTURE</p>
-          <h2>The API key lifecycle.</h2>
-          <p class="lede">Your API wallet key is never stored in plaintext. Here is what happens to it, step by step, from the moment you submit it.</p>
+          <p class="sec-label">05 — SECURITY</p>
+          <h2>What you authorize, and what happens to the key.</h2>
+          <p class="lede">You authorize an API wallet, not your main wallet. Its key is never stored in plaintext. Here is what happens to it, step by step, from the moment you submit it.</p>
         </div>
         <div class="principles">
           <div>
             <strong>1. TRANSMISSION</strong>
-            <p><strong>Encrypted TLS proxy.</strong> When you enter the private key on the site, the payload is transmitted over an encrypted HTTPS/TLS 1.3 connection directly to the isolated onboarding proxy.</p>
+            <p>The key travels over an encrypted HTTPS/TLS connection directly to the isolated onboarding service.</p>
           </div>
           <div>
-            <strong>2. CRYPTOGRAPHY</strong>
-            <p><strong>Immediate in-memory encryption.</strong> As soon as the server validates the L1 handshake, the API key is instantly encrypted in memory using authenticated symmetric cryptography. The system executes zero plaintext logging of the key.</p>
+            <strong>2. ENCRYPTION</strong>
+            <p>As soon as it is validated, the key is encrypted in memory with authenticated symmetric encryption. It is never written to logs.</p>
           </div>
           <div>
             <strong>3. STORAGE</strong>
-            <p><strong>Zero-plaintext database.</strong> The TrustAlgo PostgreSQL database strictly stores the encrypted token. The Master Key required to decode this data is physically isolated in the server environment and does not reside in the database.</p>
+            <p>The database stores only the encrypted key. The master key needed to decrypt it is kept separately, outside the database.</p>
           </div>
           <div>
             <strong>4. EXECUTION</strong>
-            <p><strong>In-memory decryption.</strong> The key is decrypted exclusively by the worker process tasked with dispatching orders to Hyperliquid. Decryption occurs in memory (RAM) a fraction of a second before signing the order. Once dispatched, the plaintext string is immediately destroyed.</p>
+            <p>The key is decrypted in memory only by the process that sends orders to Hyperliquid, a moment before signing, and discarded right after.</p>
           </div>
+        </div>
+      </section>
+      <section>
+        <div class="scope">
+          <article>
+            <div class="idx" style="color:var(--accent-2)">YOU KEEP</div>
+            <h3>Custody and control</h3>
+            <ul>
+              <li>Your main wallet and withdrawal rights</li>
+              <li>Your USDC, on your Hyperliquid account</li>
+              <li>The right to revoke the API wallet, at any time</li>
+            </ul>
+          </article>
+          <article>
+            <div class="idx" style="color:var(--accent)">TRUSTALGO DOES</div>
+            <h3>Execution only</h3>
+            <ul>
+              <li>Opens and closes trades on BTC, ETH and SOL</li>
+              <li>Places a stop on every position</li>
+              <li>Reports every trade on Telegram</li>
+            </ul>
+          </article>
+          <article class="never">
+            <div class="idx" style="color:var(--accent)">TRUSTALGO CANNOT</div>
+            <h3>Touch your funds</h3>
+            <ul>
+              <li>Withdraw or move your funds</li>
+              <li>Trade on any venue other than Hyperliquid</li>
+              <li>See or use your main wallet&rsquo;s key</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="faq" class="section-gap">
+        <p class="sec-label">06 — FAQ</p>
+        <h2>Questions before you start.</h2>
+        <div class="faq">
+          <details>
+            <summary>How much do I need to start?</summary>
+            <p>At least 1,000 USDC on your Hyperliquid account. Smaller balances run into Hyperliquid&rsquo;s minimum order sizes on BTC, ETH and SOL.</p>
+          </details>
+          <details>
+            <summary>What does it cost?</summary>
+            <p>20% of new profits, calculated each quarter above your high-water mark: if your account is not above its previous peak, you pay nothing. Deposits and withdrawals are excluded from the calculation. There are no setup or management fees. Fees are paid in USDC, either through a smart-contract approval on Arbitrum or manually from the Telegram terminal.</p>
+          </details>
+          <details>
+            <summary>Can I withdraw or stop at any time?</summary>
+            <p>Yes. Your funds stay on your Hyperliquid account and only your main wallet can withdraw them. To stop, ask on Telegram to pause new trades, or revoke the API wallet on <a href="https://app.hyperliquid.xyz/API" target="_blank" rel="noopener">app.hyperliquid.xyz/API</a>. If you revoke it, any open position stays on your account and is yours to manage.</p>
+          </details>
+          <details>
+            <summary>What losses should I expect?</summary>
+            <p>Losses are part of the design. Most trades close at a small, predefined loss, and long losing streaks are normal. In backtests since 2021 the deepest drawdown of the full portfolio was about 27%, and stress tests show it can be much deeper. Only allocate capital you can afford to see fall. <a href="/notes/by-design/">What to expect, in numbers &rarr;</a></p>
+          </details>
+          <details>
+            <summary>How much does each trade risk?</summary>
+            <p>Position size is set by risk, not by conviction: each position risks roughly 1.5&ndash;2% of the capital allocated to that coin, defined by its stop. The default split is 50% BTC, 25% ETH, 25% SOL, the allocation the model was tested with. You can change it.</p>
+          </details>
+          <details>
+            <summary>What will I see after joining?</summary>
+            <p>A private Telegram terminal with your balance, open positions, trade history, a weekly report and your quarterly statement. It is available in English, Italian, Spanish and French.</p>
+          </details>
+          <details>
+            <summary>Will other models be added?</summary>
+            <p>Yes, but only models that pass the same process: years of backtests, a frozen version and monthly live audits. Each model&rsquo;s live results will be published separately.</p>
+          </details>
+          <details>
+            <summary>Is my API key safe?</summary>
+            <p>The API wallet can trade but cannot withdraw, and its key is encrypted on arrival and never stored in plaintext. <a href="#security">How the key is handled &rarr;</a></p>
+          </details>
         </div>
       </section>
 
       <section id="onboarding" class="form-section">
-        <p class="sec-label">06 — ONBOARDING</p>
-        <h2>Secure Node Provisioning.</h2>
-        <p class="lede">Enter your entity or personal name and connect your Hyperliquid Agent credentials. Upon submission, a single-use cryptographic token will redirect you to Telegram to link your account and activate your client terminal.</p>
+        <p class="sec-label">07 — GET STARTED</p>
+        <h2>Get started.</h2>
+        <p class="lede">Submit your main wallet address and your API wallet key. The key is encrypted on arrival, then you are redirected to Telegram to activate your account. First time? Follow the <a href="/setup/">setup guide</a>, or ask a question on <a href="https://t.me/TrustAlgo_Terminal_Bot">Telegram</a> before you start.</p>
         
         <div id="formContainer">
             <form id="onboardingForm" onsubmit="submitToBackend(event)">
@@ -476,7 +531,7 @@
                   <div class="helper-text">
                     Your personal name (First & Last Name) or the name of your company/fund associated with this wallet.
                   </div>
-                  <input type="text" id="client_name" class="form-control" placeholder="e.g. Mario Rossi / Alpha Quant S.r.l." required />
+                  <input type="text" id="client_name" class="form-control" placeholder="e.g. Jane Smith / Alpha Capital Ltd" required />
                 </div>
       
                 <div class="form-group">
@@ -527,21 +582,21 @@
     <footer class="site">
       <div>
         <strong>TrustAlgo</strong>
-        <p>Quantitative infrastructure. Hyperliquid only. Non-custodial.</p>
+        <p>Systematic trading models on Hyperliquid. Non-custodial: your funds never leave your account.</p>
       </div>
       <div>
-        <strong>Capacity</strong>
-        <p>The engine is active. New nodes are admitted only while capacity remains. The cap is not raised in silence.</p>
+        <strong>Explore</strong>
+        <p><a href="/notes/live-results/">Live results</a><br /><a href="/notes/">Notes</a><br /><a href="/setup/">Setup guide</a></p>
       </div>
       <div>
         <strong>Revoke</strong>
-        <p>An API wallet can trade. It cannot withdraw. Remove it on <a href="https://app.hyperliquid.xyz/API" target="_blank" rel="noopener">app.hyperliquid.xyz/API</a>.</p>
+        <p>The API wallet can trade. It cannot withdraw. Remove it at any time on <a href="https://app.hyperliquid.xyz/API" target="_blank" rel="noopener">app.hyperliquid.xyz/API</a>.</p>
       </div>
       <div>
         <strong>Contact</strong>
-        <p>Telegram only for support. <a href="https://t.me/TrustAlgo_Terminal_Bot">Contact operator</a>. All node provisioning is handled via the secure form above.</p>
+        <p>Support runs on Telegram: <a href="https://t.me/TrustAlgo_Terminal_Bot">TrustAlgo Terminal</a>.</p>
       </div>
-      <p class="risk">Execution can lose capital. This page is not investment advice, not a solicitation, and not an offer of a managed account. You authorize the API wallet. You can revoke it.</p>
+      <p class="risk">Trading perpetual futures can lose capital, including your entire deposit. Past performance, live or simulated, does not guarantee future results. This site is not investment advice, not a solicitation and not an offer of a managed account. You authorize the API wallet and you can revoke it.</p>
     </footer>
   </div>
 

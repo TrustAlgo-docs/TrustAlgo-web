@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Setup guide | TrustAlgo</title>
+<meta name="description" content="How to fund your Hyperliquid account and create an API wallet for TrustAlgo, step by step.">
+<link rel="canonical" href="https://trustalgo.co/setup/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="TrustAlgo">
+<meta property="og:title" content="Setup guide: connect Hyperliquid to TrustAlgo">
+<meta property="og:description" content="Fund your account, create an API wallet that can trade but cannot withdraw, and activate TrustAlgo.">
+<meta property="og:url" content="https://trustalgo.co/setup/">
+<meta property="og:image" content="https://trustalgo.co/og-home.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@TrustAlgo_DEX">
+<meta name="twitter:image" content="https://trustalgo.co/og-home.png">
+<link rel="icon" href="/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c1114;--panel:#11181b;--line:#1d2a2d;--text:#c3cbcf;--white:#e8ecef;--teal:#9fc2c2;--badge:#1b3335;--badgetx:#8fb3b1;--muted:#5f686f}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+body{background:radial-gradient(circle at 105% -5%,#1b2527 0,#141c1e 18%,var(--bg) 38%) no-repeat,var(--bg)}
+a{color:var(--teal);text-decoration:none}
+.wrap{max-width:720px;margin:0 auto;padding:36px 24px 64px}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:56px}
+.brand{display:flex;align-items:center;gap:12px;color:#d9dce0;font-weight:600;letter-spacing:.06em;font-size:15px}
+.brand img{height:34px;width:auto}
+.back{font-family:'JetBrains Mono','DejaVu Sans Mono',monospace;font-size:12px;letter-spacing:.08em;color:var(--muted)}
+.meta{display:flex;align-items:center;gap:14px;font-family:'JetBrains Mono','DejaVu Sans Mono',monospace;font-size:12px;letter-spacing:.08em;margin-bottom:22px}
+.badge{background:var(--badge);color:var(--badgetx);padding:5px 10px;border-radius:3px}
+.date{color:var(--muted)}
+h1{font-weight:400;font-size:clamp(30px,6vw,44px);line-height:1.2;margin:0 0 28px;color:var(--white);letter-spacing:-.01em}
+h1 span{display:block;color:var(--teal)}
+.lead{font-size:19px;color:#d3d9dc;margin:0 0 40px}
+h2{font-family:'JetBrains Mono','DejaVu Sans Mono',monospace;font-weight:500;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--badgetx);margin:44px 0 12px}
+p{margin:0 0 16px}
+ul{margin:0 0 16px;padding-left:20px}li{margin:0 0 8px}
+strong{color:var(--white);font-weight:600}
+.note{font-size:14px;color:var(--muted)}
+.w{color:#9fc2c2}.l{color:#6f7a80}
+.log td{font-size:14px}
+table{width:100%;border-collapse:collapse;margin:8px 0 14px;font-size:15px}
+th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right}
+th:first-child,td:first-child{text-align:left;color:var(--text)}
+th{font-family:'JetBrains Mono','DejaVu Sans Mono',monospace;font-size:12px;letter-spacing:.08em;color:var(--muted);font-weight:500}
+td{color:var(--white);font-variant-numeric:tabular-nums}
+.cta{margin:52px 0 0;padding:24px;border:1px solid var(--line);background:var(--panel);border-radius:6px}
+.cta p{margin:0 0 16px;color:#d3d9dc}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-block;padding:11px 18px;border-radius:4px;font-size:15px;font-weight:500}
+.btn.primary{background:var(--teal);color:#0c1114}
+.btn.ghost{border:1px solid #2c3d40;color:var(--teal)}
+footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);line-height:1.6}
+
+.steps{display:grid;gap:12px;margin:8px 0 20px}
+.step{display:grid;grid-template-columns:44px 1fr;gap:10px;border:1px solid var(--line);background:var(--panel);padding:18px 18px 16px;border-radius:6px}
+.step .n{font-family:'JetBrains Mono','DejaVu Sans Mono',monospace;color:var(--badgetx);font-size:13px;padding-top:2px}
+.step h3{font-size:17px;font-weight:500;color:var(--white);margin:0 0 6px}
+.step p{margin:0;font-size:15px;color:var(--text)}
+.step strong{color:var(--white)}
+.box{border:1px solid #2c3d40;border-radius:6px;padding:16px 18px;font-size:15px;margin:8px 0 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a class="brand" href="/"><img src="/logo.png" alt="TrustAlgo logo">TRUSTALGO</a>
+  <a class="back" href="/">&larr; TRUSTALGO.CO</a>
+</header>
+<article>
+<div class="meta"><span class="badge">SETUP GUIDE</span><span class="date">ABOUT 10 MINUTES</span></div>
+<h1>Connect Hyperliquid.<span>Keep your keys.</span></h1>
+<p class="lead">Hyperliquid does not issue a classic exchange API key. You connect your main wallet, deposit USDC into your Hyperliquid account, then authorize an API wallet. The API wallet can trade. It cannot withdraw.</p>
+<div class="steps">
+          <article class="step">
+            <div class="n">01</div>
+            <div>
+              <h3>Connect the master wallet</h3>
+              <p>Open <a href="https://app.hyperliquid.xyz" target="_blank" rel="noopener">app.hyperliquid.xyz</a> and connect MetaMask, Rabby, or WalletConnect. Sign the connection request. That signature identifies the account. It does not grant TrustAlgo, or the API wallet, withdrawal rights.</p>
+            </div>
+          </article>
+          <article class="step">
+            <div class="n">02</div>
+            <div>
+              <h3>Deposit USDC to the exchange (1,000 USDC Recommended)</h3>
+              <p><strong>Connecting your wallet is not enough.</strong> You must actively transfer USDC from your personal wallet into your Hyperliquid L1 account using the "Deposit" button. While Hyperliquid credits deposits from 5 USDC, <strong>a minimum balance of 1,000 USDC is required</strong> for optimal position sizing across BTC, ETH, and SOL minimum lot constraints. Wait until the balance shows on Hyperliquid before creating the API wallet.</p>
+            </div>
+          </article>
+          <article class="step">
+            <div class="n">03</div>
+            <div>
+              <h3>Open the API page</h3>
+              <p>Go to More, then API, or open <a href="https://app.hyperliquid.xyz/API" target="_blank" rel="noopener">app.hyperliquid.xyz/API</a>. An API wallet is an agent wallet: it signs for the master account. Info requests still use the master address, not the agent address.</p>
+            </div>
+          </article>
+          <article class="step">
+            <div class="n">04</div>
+            <div>
+              <h3>Name it, then Generate</h3>
+              <p>Enter a name (e.g., trustalgo). <strong>Ignore the 42-character address that auto-fills in the box.</strong> Click the green "Generate" text on the right. The screen will dim and a popup dialog will appear in the center.</p>
+            </div>
+          </article>
+          <article class="step">
+            <div class="n">05</div>
+            <div>
+              <h3>Copy the 66-character Private Key</h3>
+              <p>Inside that popup, you will see the actual Secret Private Key (64 or 66 characters). <strong>Copy this exact string immediately.</strong> Hyperliquid will never show it again once you close the window. After copying, click "Authorize API Wallet" to sign with your master wallet.</p>
+            </div>
+          </article>
+          <article class="step">
+            <div class="n">06</div>
+            <div>
+              <h3>Submit and activate</h3>
+              <p>Keep the master address and the API wallet private key separate. The master address is the account. The private key is the signer. Then submit both on the <a href="/#onboarding">Get started</a> form. You can revoke the API wallet on the Hyperliquid API page at any time.</p>
+            </div>
+          </article>
+        </div>
+        
+<div class="box"><strong>Scope.</strong> The API wallet can place and manage orders. It cannot withdraw: withdrawals stay with your main wallet. If you lose the key, generate a new API wallet. Do not reuse a deregistered agent address.</div>
+<div class="cta">
+  <p>Ready? Submit your main wallet address and API wallet key. Questions first? Ask on Telegram.</p>
+  <div class="btns">
+    <a class="btn primary" href="/#onboarding">Get started</a>
+    <a class="btn ghost" href="https://t.me/TrustAlgo_Terminal_Bot">Ask on Telegram</a>
+  </div>
+</div>
+</article>
+<footer>
+Trading perpetual futures can lose capital, including your entire deposit. Past performance, live or simulated, does not guarantee future results. Nothing on this page is financial advice.
+</footer>
+</div>
+</body>
+</html>
