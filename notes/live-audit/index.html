@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live vs backtest: the 3–5% gap | TrustAlgo</title>
+<meta name="description" content="Our first live-vs-backtest audit found the engine was skipping 3–5% of trades. Here is the cause, the fix, and the differences that remain.">
+<link rel="canonical" href="https://trustalgo.co/notes/live-audit/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="TrustAlgo">
+<meta property="og:title" content="Live vs backtest: the 3–5% gap">
+<meta property="og:description" content="Our first live-vs-backtest audit found the engine was skipping 3–5% of trades. Here is the cause, the fix, and the differences that remain.">
+<meta property="og:url" content="https://trustalgo.co/notes/live-audit/">
+<meta property="og:image" content="https://trustalgo.co/notes/og/live-audit.png">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
+<meta property="og:image:alt" content="Live was missing 3–5% of trades. We found why. Now: zero.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@TrustAlgo_DEX">
+<meta name="twitter:title" content="Live vs backtest: the 3–5% gap">
+<meta name="twitter:description" content="Our first live-vs-backtest audit found the engine was skipping 3–5% of trades. Here is the cause, the fix, and the differences that remain.">
+<meta name="twitter:image" content="https://trustalgo.co/notes/og/live-audit.png">
+<link rel="icon" href="/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c1114;--panel:#11181b;--line:#1d2a2d;--text:#c3cbcf;--white:#e8ecef;--teal:#9fc2c2;--badge:#1b3335;--badgetx:#8fb3b1;--muted:#5f686f}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+body{background:radial-gradient(circle at 105% -5%,#1b2527 0,#141c1e 18%,var(--bg) 38%) no-repeat,var(--bg)}
+a{color:var(--teal);text-decoration:none}
+.wrap{max-width:720px;margin:0 auto;padding:36px 24px 64px}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:56px}
+.brand{display:flex;align-items:center;gap:12px;color:#d9dce0;font-weight:600;letter-spacing:.06em;font-size:15px}
+.brand img{height:34px;width:auto}
+.back{font-family:'JetBrains Mono','DejaVu Sans Mono',monospace;font-size:12px;letter-spacing:.08em;color:var(--muted)}
+.meta{display:flex;align-items:center;gap:14px;font-family:'JetBrains Mono','DejaVu Sans Mono',monospace;font-size:12px;letter-spacing:.08em;margin-bottom:22px}
+.badge{background:var(--badge);color:var(--badgetx);padding:5px 10px;border-radius:3px}
+.date{color:var(--muted)}
+h1{font-weight:400;font-size:clamp(30px,6vw,44px);line-height:1.2;margin:0 0 28px;color:var(--white);letter-spacing:-.01em}
+h1 span{display:block;color:var(--teal)}
+.lead{font-size:19px;color:#d3d9dc;margin:0 0 40px}
+h2{font-family:'JetBrains Mono','DejaVu Sans Mono',monospace;font-weight:500;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--badgetx);margin:44px 0 12px}
+p{margin:0 0 16px}
+ul{margin:0 0 16px;padding-left:20px}li{margin:0 0 8px}
+strong{color:var(--white);font-weight:600}
+.note{font-size:14px;color:var(--muted)}
+.w{color:#9fc2c2}.l{color:#6f7a80}
+.log td{font-size:14px}
+table{width:100%;border-collapse:collapse;margin:8px 0 14px;font-size:15px}
+th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right}
+th:first-child,td:first-child{text-align:left;color:var(--text)}
+th{font-family:'JetBrains Mono','DejaVu Sans Mono',monospace;font-size:12px;letter-spacing:.08em;color:var(--muted);font-weight:500}
+td{color:var(--white);font-variant-numeric:tabular-nums}
+.cta{margin:52px 0 0;padding:24px;border:1px solid var(--line);background:var(--panel);border-radius:6px}
+.cta p{margin:0 0 16px;color:#d3d9dc}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-block;padding:11px 18px;border-radius:4px;font-size:15px;font-weight:500}
+.btn.primary{background:var(--teal);color:#0c1114}
+.btn.ghost{border:1px solid #2c3d40;color:var(--teal)}
+footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a class="brand" href="/"><img src="/logo.png" alt="TrustAlgo logo">TRUSTALGO</a>
+  <a class="back" href="/">&larr; TRUSTALGO.CO</a>
+</header>
+<article>
+<div class="meta"><span class="badge">NOTE</span><span class="date">18 NOVEMBER 2026</span></div>
+<h1>Live was missing 3&ndash;5% of trades.<span>We found why. Now: zero.</span></h1>
+
+<p class="lead">Every month we compare each live trade with what the backtest would have done over the same hours. In the first audit the two didn&rsquo;t fully match. This note explains the gap and how we closed it.</p>
+
+<h2>What we found</h2>
+<p>The live engine was skipping trades the backtest took: about <strong>3% on BTC</strong>, <strong>5% on ETH</strong> and <strong>under 1% on SOL</strong>.</p>
+
+<h2>Why</h2>
+<p>When a stop-loss or take-profit filled on Hyperliquid, our database only learned about it at the next hourly reconciliation. Until then the engine still saw the position as open, and skipped any new signal for that strategy.</p>
+<p>The same reconciliation logged take-profits as stops and could leave the opposite order on the book.</p>
+
+<h2>The fix</h2>
+<p>Before every entry and every exit, the engine now re-syncs with Hyperliquid: fills are recorded immediately and any leftover order is cancelled. Replayed on the same history, missed trades went from 3&ndash;5% to <strong>zero</strong>.</p>
+
+<h2>Since then</h2>
+<ul>
+  <li>Signals go out about <strong>2 seconds</strong> after the hourly candle closes (it was about 17).</li>
+  <li>An exit and an opposite entry in the same hour now execute in the same order as in the backtest.</li>
+  <li>The latest release was replayed on 600 hours of history before going live: identical signals.</li>
+</ul>
+
+<h2>What still differs</h2>
+<p>Two gaps can&rsquo;t be removed by code, and we&rsquo;d rather say so:</p>
+<ul>
+  <li>The backtest uses Binance price, volume and funding data; live uses Hyperliquid&rsquo;s. Volume filters can occasionally disagree.</li>
+  <li>Live orders fill a few seconds after the candle opens; the backtest assumes the open price plus 0.05% slippage.</li>
+</ul>
+<p>Our rule: each month, at least 80% of live entries must match the backtest within one hour. If a coin stays below that for two months in a row, it is paused until the cause is found.</p>
+
+<div class="cta">
+  <p>Your funds stay on your Hyperliquid account. The API wallet can trade, it cannot withdraw, and you can revoke it at any time.</p>
+  <div class="btns">
+    <a class="btn primary" href="/#onboarding">Start onboarding</a>
+    <a class="btn ghost" href="/#architecture">How TrustAlgo works</a>
+  </div>
+</div>
+</article>
+<footer>
+Backtest figures are simulations and cannot capture every live condition. Past performance, simulated or live, does not guarantee future results. Trading perpetual futures involves a substantial risk of loss, including the loss of your entire deposit. Nothing on this page is financial advice.
+</footer>
+</div>
+</body>
+</html>

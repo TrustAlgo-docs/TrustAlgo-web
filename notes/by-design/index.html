@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why 3 out of 4 of our trades lose | TrustAlgo</title>
+<meta name="description" content="TrustAlgo is a trend-following system. Most trades close at a small, fixed loss; a few trends carry the year. Here is what that looks like, and why the strategy is frozen.">
+<link rel="canonical" href="https://trustalgo.co/notes/by-design/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="TrustAlgo">
+<meta property="og:title" content="Why 3 out of 4 of our trades lose">
+<meta property="og:description" content="TrustAlgo is a trend-following system. Most trades close at a small, fixed loss; a few trends carry the year. Here is what that looks like, and why the strategy is frozen.">
+<meta property="og:url" content="https://trustalgo.co/notes/by-design/">
+<meta property="og:image" content="https://trustalgo.co/notes/og/by-design.png">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
+<meta property="og:image:alt" content="3 out of 4 trades lose. That&#x27;s the strategy, not a bug.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@TrustAlgo_DEX">
+<meta name="twitter:title" content="Why 3 out of 4 of our trades lose">
+<meta name="twitter:description" content="TrustAlgo is a trend-following system. Most trades close at a small, fixed loss; a few trends carry the year. Here is what that looks like, and why the strategy is frozen.">
+<meta name="twitter:image" content="https://trustalgo.co/notes/og/by-design.png">
+<link rel="icon" href="/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c1114;--panel:#11181b;--line:#1d2a2d;--text:#c3cbcf;--white:#e8ecef;--teal:#9fc2c2;--badge:#1b3335;--badgetx:#8fb3b1;--muted:#5f686f}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+body{background:radial-gradient(circle at 105% -5%,#1b2527 0,#141c1e 18%,var(--bg) 38%) no-repeat,var(--bg)}
+a{color:var(--teal);text-decoration:none}
+.wrap{max-width:720px;margin:0 auto;padding:36px 24px 64px}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:56px}
+.brand{display:flex;align-items:center;gap:12px;color:#d9dce0;font-weight:600;letter-spacing:.06em;font-size:15px}
+.brand img{height:34px;width:auto}
+.back{font-family:'JetBrains Mono','DejaVu Sans Mono',monospace;font-size:12px;letter-spacing:.08em;color:var(--muted)}
+.meta{display:flex;align-items:center;gap:14px;font-family:'JetBrains Mono','DejaVu Sans Mono',monospace;font-size:12px;letter-spacing:.08em;margin-bottom:22px}
+.badge{background:var(--badge);color:var(--badgetx);padding:5px 10px;border-radius:3px}
+.date{color:var(--muted)}
+h1{font-weight:400;font-size:clamp(30px,6vw,44px);line-height:1.2;margin:0 0 28px;color:var(--white);letter-spacing:-.01em}
+h1 span{display:block;color:var(--teal)}
+.lead{font-size:19px;color:#d3d9dc;margin:0 0 40px}
+h2{font-family:'JetBrains Mono','DejaVu Sans Mono',monospace;font-weight:500;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--badgetx);margin:44px 0 12px}
+p{margin:0 0 16px}
+ul{margin:0 0 16px;padding-left:20px}li{margin:0 0 8px}
+strong{color:var(--white);font-weight:600}
+.note{font-size:14px;color:var(--muted)}
+.w{color:#9fc2c2}.l{color:#6f7a80}
+.log td{font-size:14px}
+table{width:100%;border-collapse:collapse;margin:8px 0 14px;font-size:15px}
+th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right}
+th:first-child,td:first-child{text-align:left;color:var(--text)}
+th{font-family:'JetBrains Mono','DejaVu Sans Mono',monospace;font-size:12px;letter-spacing:.08em;color:var(--muted);font-weight:500}
+td{color:var(--white);font-variant-numeric:tabular-nums}
+.cta{margin:52px 0 0;padding:24px;border:1px solid var(--line);background:var(--panel);border-radius:6px}
+.cta p{margin:0 0 16px;color:#d3d9dc}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-block;padding:11px 18px;border-radius:4px;font-size:15px;font-weight:500}
+.btn.primary{background:var(--teal);color:#0c1114}
+.btn.ghost{border:1px solid #2c3d40;color:var(--teal)}
+footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a class="brand" href="/"><img src="/logo.png" alt="TrustAlgo logo">TRUSTALGO</a>
+  <a class="back" href="/">&larr; TRUSTALGO.CO</a>
+</header>
+<article>
+<div class="meta"><span class="badge">NOTE</span><span class="date">18 NOVEMBER 2026</span></div>
+<h1>3 out of 4 trades lose.<span>That's the strategy, not a bug.</span></h1>
+
+<p class="lead">TrustAlgo is a trend-following system. Most of its trades close at a loss, on purpose. This note explains why, what that looks like in numbers, and why we froze the strategy instead of tuning it.</p>
+
+<h2>How the edge works</h2>
+<p>The system enters when a move starts on BTC, ETH or SOL. Most moves fail quickly. When that happens, a stop closes the position at a loss that was fixed before entry.</p>
+<p>When a move turns into a trend, the position stays open and the gain is many times the loss. A handful of trends each year pay for all the stops.</p>
+
+<h2>What to expect, in numbers</h2>
+<table>
+  <tr><th></th><th>BTC</th><th>ETH</th><th>SOL</th></tr>
+  <tr><td>Winning trades</td><td>24%</td><td>25%</td><td>22%</td></tr>
+  <tr><td>Longest losing streak</td><td>20</td><td>12</td><td>20</td></tr>
+  <tr><td>Negative months</td><td>48%</td><td>49%</td><td>47%</td></tr>
+  <tr><td>Worst month</td><td>&minus;16%</td><td>&minus;23%</td><td>&minus;27%</td></tr>
+</table>
+<p class="note">Backtest 2020&ndash;2026 (SOL from 2021), Hyperliquid fees, 0.05% slippage. Simulated, not live results.</p>
+<p>About half the months are negative. A run of 15&ndash;20 stops in a row is normal behaviour, not a malfunction.</p>
+
+<h2>Why we froze it</h2>
+<p>A strategy like this is easiest to break by hand. After ten stops in a row the instinct is to change something, and the change usually removes the very trades that would have paid for the losses. So version 1.0.8 is frozen:</p>
+<ul>
+  <li><strong>No parameter changes</strong> until the annual review in November 2027.</li>
+  <li><strong>Any change must hold</strong> on a year of data it was never fitted to.</li>
+  <li><strong>Drawdown limits are set in advance:</strong> review, then halve exposure, then stop new entries.</li>
+</ul>
+
+<h2>What this means for you</h2>
+<p>If you run TrustAlgo, you will see long stretches of small losses between larger wins. That is the system working as designed.</p>
+
+<div class="cta">
+  <p>Your funds stay on your Hyperliquid account. The API wallet can trade, it cannot withdraw, and you can revoke it at any time.</p>
+  <div class="btns">
+    <a class="btn primary" href="/#onboarding">Start onboarding</a>
+    <a class="btn ghost" href="/#architecture">How TrustAlgo works</a>
+  </div>
+</div>
+</article>
+<footer>
+Backtest figures are simulations and cannot capture every live condition. Past performance, simulated or live, does not guarantee future results. Trading perpetual futures involves a substantial risk of loss, including the loss of your entire deposit. Nothing on this page is financial advice.
+</footer>
+</div>
+</body>
+</html>
