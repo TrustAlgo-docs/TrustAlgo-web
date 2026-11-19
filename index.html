@@ -237,6 +237,8 @@
       header { padding-top: 16px; }
       .hero { padding-top: 36px; }
     }
+    .principles a{color:var(--accent);text-decoration:none;white-space:nowrap}
+    .principles a:hover{text-decoration:underline}
   </style>
 </head>
 <body>
@@ -254,6 +256,7 @@
         <a class="hide" href="#model">Model</a>
         <a class="hide" href="#setup">Setup</a>
         <a class="hide" href="#security">Security</a>
+        <a class="hide" href="/notes/live-results/">Results</a>
         <a class="nav-cta" href="#onboarding">Request Node</a>
       </nav>
     </header>
@@ -261,11 +264,11 @@
     <main id="top">
       <section class="hero">
         <div>
-          <p class="kicker">Hyperliquid · quantitative infrastructure</p>
+          <p class="kicker">Hyperliquid · systematic trading models</p>
           <h1>Non-custodial execution<br />on <span>Hyperliquid.</span></h1>
-          <p class="lede">TrustAlgo is a boutique quantitative execution firm. We run non-custodial, latency-optimized models on a single venue: Hyperliquid. Capacity is strictly capped to preserve alpha decay and minimize slippage.</p>
+          <p class="lede">TrustAlgo runs systematic trading models on a single venue: Hyperliquid. They trade from your own account through an API wallet that cannot withdraw. The current model is trend-following on BTC, ETH and SOL. Live results are published every month.</p>
           <div class="actions">
-            <a class="btn btn-primary" href="#architecture">View Architecture</a>
+            <a class="btn btn-primary" href="/notes/live-results/">See live results</a>
             <a class="btn btn-ghost" href="#onboarding">Request Node</a>
           </div>
           <div class="status">
@@ -274,7 +277,7 @@
             <span>|</span>
             <span>CAPACITY: LIMITED</span>
             <span>|</span>
-            <span>VENUE: <span class="hi">HYPERLIQUID</span></span>
+            <span>MODEL: <span class="hi">TREND v1.0.8</span></span>
           </div>
         </div>
         <aside class="panel" aria-label="Execution path">
@@ -294,7 +297,7 @@
         <div class="spec" aria-label="Operating envelope">
           <div><span>VENUE</span><strong>Hyperliquid only</strong></div>
           <div><span>CUSTODY</span><strong>Master wallet</strong></div>
-          <div><span>SIGNER</span><strong>API wallet</strong></div>
+          <div><span>FEE</span><strong>20% of new profits</strong></div>
           <div><span>CAPITAL</span><strong>1,000+ USDC</strong></div>
         </div>
       </section>
@@ -316,7 +319,7 @@
           <article class="card">
             <div class="idx">CAPACITY</div>
             <h3>Capped on purpose</h3>
-            <p>Total execution capacity is limited. Fewer concurrent flows means less self-impact and slower alpha decay.</p>
+            <p>The number of accounts is limited, so orders stay small relative to the Hyperliquid book and fills stay close to the model.</p>
           </article>
         </div>
       </section>
@@ -332,7 +335,7 @@
             <ul>
               <li>One execution seat, while intake is open</li>
               <li>Order flow on the Hyperliquid book only</li>
-              <li>Zero setup or fixed management fees</li>
+              <li>No setup or management fees: 20% performance fee on new profits only</li>
             </ul>
           </article>
           <article>
@@ -359,25 +362,25 @@
       <section class="split" id="model">
         <div>
           <p class="sec-label">03 — OPERATING MODEL</p>
-          <h2>A software house for Hyperliquid execution.</h2>
-          <p class="lede">The stack is the product: quantitative infrastructure for operators who need to trade Hyperliquid without handing over custody.</p>
+          <h2>Systematic models. Frozen and audited.</h2>
+          <p class="lede">Every model goes live only after the same process: backtested on years of data, frozen at a version, then audited live against its backtest every month. New models are added only when they pass it.</p>
         </div>
         <div class="principles">
           <div>
-            <strong>VENUE</strong>
-            <p>Hyperliquid only. Perps and spot sit on its on-chain order book, not an AMM pool.</p>
+            <strong>CURRENT MODEL</strong>
+            <p>Trend v1.0.8: trend-following on BTC, ETH and SOL perpetuals, long and short, on hourly signals. Every position is protected by a stop placed on Hyperliquid. <a href="/notes/by-design/">Why most trades lose &rarr;</a></p>
           </div>
           <div>
-            <strong>LATENCY</strong>
-            <p>Models are tuned to the Hyperliquid book: timing, size and queue position, not cross-venue routing.</p>
+            <strong>RISK</strong>
+            <p>Drawdown is checked every hour, per account, against limits set in advance: review, then halve exposure, then stop new entries.</p>
           </div>
           <div>
-            <strong>SLIPPAGE</strong>
-            <p>Size is constrained so the model does not become its own market impact.</p>
+            <strong>FEES</strong>
+            <p>20% performance fee above the high-water mark, settled quarterly. No new profit, no fee. No setup or management fees.</p>
           </div>
           <div>
-            <strong>ACCESS</strong>
-            <p>Engine is active. New nodes are admitted only while capacity remains.</p>
+            <strong>TRANSPARENCY</strong>
+            <p>Live results are published monthly, every closed trade included. Live is audited against the backtest each month. <a href="/notes/">Read the notes &rarr;</a></p>
           </div>
         </div>
       </section>
@@ -437,7 +440,7 @@
         <div>
           <p class="sec-label">05 — SECURITY ARCHITECTURE</p>
           <h2>The API key lifecycle.</h2>
-          <p class="lede">No private key is ever written in plaintext to disk or database. TrustAlgo's infrastructure uses a four-phase data isolation protocol to ensure the Agent Wallet remains protected.</p>
+          <p class="lede">Your API wallet key is never stored in plaintext. Here is what happens to it, step by step, from the moment you submit it.</p>
         </div>
         <div class="principles">
           <div>
@@ -496,24 +499,24 @@
 
               </div>
 
-              <p class="sec-label" style="margin-top: 28px;">CLUSTER ALLOCATION (DEFAULT 34 / 33 / 33 — MUST SUM TO 100)</p>
+              <p class="sec-label" style="margin-top: 28px;">ALLOCATION (DEFAULT 50 / 25 / 25, THE TESTED SPLIT — MUST SUM TO 100)</p>
               <div class="alloc-grid">
                 <div class="form-group">
                   <label for="alloc_btc">BTC %</label>
-                  <input type="number" id="alloc_btc" class="form-control" value="34" min="0" max="100" required />
+                  <input type="number" id="alloc_btc" class="form-control" value="50" min="0" max="100" required />
                 </div>
                 <div class="form-group">
                   <label for="alloc_eth">ETH %</label>
-                  <input type="number" id="alloc_eth" class="form-control" value="33" min="0" max="100" required />
+                  <input type="number" id="alloc_eth" class="form-control" value="25" min="0" max="100" required />
                 </div>
                 <div class="form-group">
                   <label for="alloc_sol">SOL %</label>
-                  <input type="number" id="alloc_sol" class="form-control" value="33" min="0" max="100" required />
+                  <input type="number" id="alloc_sol" class="form-control" value="25" min="0" max="100" required />
                 </div>
               </div>
       
               <div style="margin-top: 36px;">
-                <button type="submit" id="submitBtn" class="btn btn-primary">[ENCRYPT KEYS & CONTINUE TO TELEGRAM]</button>
+                <button type="submit" id="submitBtn" class="btn btn-primary">Encrypt key &amp; continue to Telegram</button>
               </div>
             </form>
         </div>
@@ -604,7 +607,7 @@
         };
 
         const formBtn = document.getElementById('submitBtn');
-        formBtn.textContent = "[PROCESSING SECURE HANDSHAKE...]";
+        formBtn.textContent = "Encrypting…";
         formBtn.disabled = true;
 
         try {
@@ -638,12 +641,12 @@
 
             } else {
                 alert('❌ API Error: ' + (data.detail || 'Unable to generate session token.'));
-                formBtn.textContent = "[ENCRYPT KEYS & CONTINUE TO TELEGRAM]";
+                formBtn.textContent = "Encrypt key & continue to Telegram";
                 formBtn.disabled = false;
             }
         } catch (error) {
             alert('❌ Network Error: Unable to reach TrustAlgo proxy server. Please ensure the backend is running.');
-            formBtn.textContent = "[ENCRYPT KEYS & CONTINUE TO TELEGRAM]";
+            formBtn.textContent = "Encrypt key & continue to Telegram";
             formBtn.disabled = false;
         }
     }
