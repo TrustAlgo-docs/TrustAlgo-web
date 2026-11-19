@@ -11,10 +11,10 @@
 <meta property="og:title" content="Setup guide: connect Hyperliquid to TrustAlgo">
 <meta property="og:description" content="Fund your account, create an API wallet that can trade but cannot withdraw, and activate TrustAlgo.">
 <meta property="og:url" content="https://trustalgo.co/setup/">
-<meta property="og:image" content="https://trustalgo.co/og-home-v3.jpg">
+<meta property="og:image" content="https://trustalgo.co/og-home-v2.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@TrustAlgo_DEX">
-<meta name="twitter:image" content="https://trustalgo.co/og-home-v3.jpg">
+<meta name="twitter:image" content="https://trustalgo.co/og-home-v2.jpg">
 <link rel="icon" href="/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -81,6 +81,7 @@ footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-si
 </div></section>
 <div class="wrap">
 <article>
+<div class="box" style="margin:0 0 22px">Never used a crypto wallet, or do not have USDC yet? Start with the <a href="/start/">beginner guide</a>: it covers everything from zero.</div>
 <p class="lead">Hyperliquid does not issue a classic exchange API key. You connect your main wallet, deposit USDC into your Hyperliquid account, then authorize an API wallet. The API wallet can trade. It cannot withdraw.</p>
 <div class="steps">
           <article class="step">
@@ -115,7 +116,7 @@ footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-si
             <div class="n">05</div>
             <div>
               <h3>Copy the 66-character Private Key</h3>
-              <p>Inside that popup, you will see the actual Secret Private Key (64 or 66 characters). <strong>Copy this exact string immediately.</strong> Hyperliquid will never show it again once you close the window. After copying, click "Authorize API Wallet" to sign with your master wallet.</p>
+              <p>Inside that popup, you will see the actual Secret Private Key (64 or 66 characters). <strong>Copy this exact string immediately.</strong> Hyperliquid will never show it again once you close the window. After copying, click "Authorize API Wallet". In the window that opens, set <strong>Days Valid</strong> to <strong>MAX</strong> (180 days), click Authorize and sign with your main wallet. The key stops working after that period; the Telegram terminal reminds you to renew it.</p>
             </div>
           </article>
           <article class="step">
@@ -128,6 +129,13 @@ footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-si
         </div>
         
 <div class="box"><strong>Scope.</strong> The API wallet can place and manage orders. It cannot withdraw: withdrawals stay with your main wallet. If you lose the key, generate a new API wallet. Do not reuse a deregistered agent address.</div>
+<h2>After you submit</h2>
+<ol>
+  <li><strong>Telegram opens.</strong> Press Start: the bot links your Telegram account to your submission.</li>
+  <li><strong>Approval within 24 hours.</strong> You receive a message with your starting balance (your high-water mark) and the two ways to pay future fees.</li>
+  <li><strong>First trade when the model signals.</strong> It can take days. Use /status and /positions at any time; a weekly report arrives on its own.</li>
+  <li><strong>Every 180 days, renew the key.</strong> Create a new API wallet on Hyperliquid and send it with /renew. You are reminded 7 days and 24 hours before.</li>
+</ol>
 <div class="cta">
   <p>Ready? Submit your main wallet address and API wallet key. Questions first? Ask on Telegram.</p>
   <div class="btns">

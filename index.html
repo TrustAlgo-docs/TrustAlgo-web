@@ -267,6 +267,22 @@
     .faq details[open] summary:after { content: "\2013"; }
     .faq details p { color: var(--muted); font-weight: 300; font-size: 15px; padding: 0 0 18px; max-width: 760px; }
     .section-gap { padding-top: 56px; }
+    .newbie { margin: -12px 0 24px; font-size: 14px; color: var(--muted); font-weight: 300; }
+    .newbie a { color: var(--accent); text-decoration: none; font-weight: 400; }
+    .newbie a:hover { text-decoration: underline; }
+    .prep { display: grid; grid-template-columns: 1fr 1.4fr; gap: 16px; margin: 6px 0 28px; }
+    .prep > div { border: 1px solid var(--line-soft); background: rgba(12,14,18,0.65); padding: 22px 22px 18px; }
+    .prep .idx { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 14px; }
+    .prep ul { list-style: none; margin: 0; padding: 0; }
+    .prep li { color: var(--muted); font-size: 14px; font-weight: 300; padding: 7px 0 7px 22px; position: relative; border-top: 1px solid var(--line-soft); }
+    .prep li:first-child { border-top: 0; }
+    .prep li:before { content: "\2713"; position: absolute; left: 0; color: var(--accent); }
+    .prep ol { list-style: none; margin: 0; padding: 0; counter-reset: s; }
+    .prep ol li { padding-left: 34px; }
+    .prep ol li:before { counter-increment: s; content: "0" counter(s); font-family: "JetBrains Mono", monospace; font-size: 11px; top: 9px; }
+    .prep li strong { color: var(--text); font-weight: 500; }
+    .prep a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 760px) { .prep { grid-template-columns: 1fr; } }
     .scope { margin-top: 22px; }
   </style>
 </head>
@@ -299,6 +315,7 @@
             <a class="btn btn-primary" href="#results">See live results</a>
             <a class="btn btn-ghost" href="#onboarding">Get started</a>
           </div>
+          <p class="newbie">New to crypto? <a href="/start/">Start with the beginner guide &rarr;</a></p>
           <div class="status">
             <span class="dot"></span>
             <span>STATUS: <span class="hi">ENGINE ACTIVE</span></span>
@@ -338,7 +355,7 @@
           <article class="card">
             <div class="idx">STEP 01</div>
             <h3>Fund your Hyperliquid account</h3>
-            <p>Deposit at least 1,000 USDC to your own Hyperliquid account. The funds never move to TrustAlgo.</p>
+            <p>Deposit at least 1,000 USDC to your own Hyperliquid account. The funds never move to TrustAlgo. Never used a crypto wallet? <a href="/start/">Beginner guide &rarr;</a></p>
           </article>
           <article class="card">
             <div class="idx">STEP 02</div>
@@ -484,12 +501,24 @@
         <h2>Questions before you start.</h2>
         <div class="faq">
           <details>
+            <summary>I have never used crypto. Can I still join?</summary>
+            <p>Yes. The <a href="/start/">beginner guide</a> takes you from zero: creating a wallet, buying USDC, depositing on Hyperliquid and creating the API wallet. It takes about 45 minutes, once. If you get stuck, ask on <a href="https://t.me/TrustAlgo_Terminal_Bot">Telegram</a>.</p>
+          </details>
+          <details>
             <summary>How much do I need to start?</summary>
             <p>At least 1,000 USDC on your Hyperliquid account. Smaller balances run into Hyperliquid&rsquo;s minimum order sizes on BTC, ETH and SOL.</p>
           </details>
           <details>
             <summary>What does it cost?</summary>
             <p>20% of new profits, calculated each quarter above your high-water mark: if your account is not above its previous peak, you pay nothing. Deposits and withdrawals are excluded from the calculation. There are no setup or management fees. Fees are paid in USDC, either through a smart-contract approval on Arbitrum or manually from the Telegram terminal.</p>
+          </details>
+          <details>
+            <summary>How long until my account is active?</summary>
+            <p>Up to 24 hours. After you submit the form and press Start on Telegram, every new account is reviewed by hand. When it is approved you receive a Telegram message with your starting balance, which becomes your high-water mark, and the two ways to pay future fees.</p>
+          </details>
+          <details>
+            <summary>I am active, but there are no trades yet. Is something wrong?</summary>
+            <p>Probably not. The model trades only when a trend appears, roughly 15–20 trades a month across BTC, ETH and SOL in backtests, and some weeks have none. Check /status and /positions in the Telegram terminal at any time; a weekly report arrives on its own.</p>
           </details>
           <details>
             <summary>Can I withdraw or stop at any time?</summary>
@@ -502,6 +531,14 @@
           <details>
             <summary>How much does each trade risk?</summary>
             <p>Position size is set by risk, not by conviction: each position risks roughly 1.5&ndash;2% of the capital allocated to that coin, defined by its stop. The default split is 50% BTC, 25% ETH, 25% SOL, the allocation the model was tested with. You can change it.</p>
+          </details>
+          <details>
+            <summary>Does the API wallet expire?</summary>
+            <p>Yes. Hyperliquid API wallets last at most 180 days, so choose MAX when you create it. The Telegram terminal reminds you 7 days and 24 hours before expiry: create a new API wallet on Hyperliquid and send it with /renew. Nothing else changes.</p>
+          </details>
+          <details>
+            <summary>What happens if I do not pay a fee?</summary>
+            <p>Fees are due only after a quarter that ends above your high-water mark. Until a due fee is paid, no new positions are opened; positions already open keep being managed until they close. Paying with /billing or /settle restores normal trading.</p>
           </details>
           <details>
             <summary>What will I see after joining?</summary>
@@ -522,7 +559,28 @@
         <p class="sec-label">07 — GET STARTED</p>
         <h2>Get started.</h2>
         <p class="lede">Submit your main wallet address and your API wallet key. The key is encrypted on arrival, then you are redirected to Telegram to activate your account. First time? Follow the <a href="/setup/">setup guide</a>, or ask a question on <a href="https://t.me/TrustAlgo_Terminal_Bot">Telegram</a> before you start.</p>
-        
+
+        <div class="prep">
+          <div>
+            <p class="idx">BEFORE YOU START</p>
+            <ul>
+              <li>A Hyperliquid account with <strong>at least 1,000 USDC</strong></li>
+              <li>An <strong>API wallet key</strong>, set to 180 days &mdash; <a href="/setup/">how</a></li>
+              <li>A <strong>Telegram</strong> account</li>
+              <li>About <strong>10 minutes</strong></li>
+            </ul>
+          </div>
+          <div>
+            <p class="idx">AFTER YOU SUBMIT</p>
+            <ol>
+              <li><strong>Telegram opens.</strong> Press Start to link your account.</li>
+              <li><strong>Approval within 24 hours.</strong> You get a message with your starting balance and how fees are paid.</li>
+              <li><strong>First trade when the model signals.</strong> It can take days: the model trades only when a trend appears.</li>
+              <li><strong>Renew the key every 180 days.</strong> The bot reminds you 7 days and 24 hours before; use /renew.</li>
+            </ol>
+          </div>
+        </div>
+
         <div id="formContainer">
             <form id="onboardingForm" onsubmit="submitToBackend(event)">
               <div class="form-grid">
@@ -587,7 +645,7 @@
       </div>
       <div>
         <strong>Explore</strong>
-        <p><a href="/notes/live-results/">Live results</a><br /><a href="/notes/">Notes</a><br /><a href="/setup/">Setup guide</a></p>
+        <p><a href="/notes/live-results/">Live results</a><br /><a href="/notes/">Notes</a><br /><a href="/start/">Beginner guide</a><br /><a href="/setup/">Setup guide</a></p>
       </div>
       <div>
         <strong>Revoke</strong>
