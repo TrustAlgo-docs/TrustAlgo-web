@@ -510,7 +510,7 @@
           </details>
           <details>
             <summary>What does it cost?</summary>
-            <p>20% of new profits, calculated each quarter above your high-water mark: if your account is not above its previous peak, you pay nothing. Deposits and withdrawals are excluded from the calculation. There are no setup or management fees. Fees are paid in USDC, either through a smart-contract approval on Arbitrum or manually from the Telegram terminal.</p>
+            <p>20% of new profits, calculated each quarter above your high-water mark: if your account is not above its previous peak, you pay nothing. Deposits and withdrawals are excluded from the calculation. There are no setup or management fees. Fees are paid in USDC from your wallet on Arbitrum, not from your Hyperliquid balance: automatically through a smart-contract approval, or manually from the Telegram terminal. <a href="/guide/#fees">How fees are paid &rarr;</a></p>
           </details>
           <details>
             <summary>How long until my account is active?</summary>
@@ -522,7 +522,7 @@
           </details>
           <details>
             <summary>Can I withdraw or stop at any time?</summary>
-            <p>Yes. Your funds stay on your Hyperliquid account and only your main wallet can withdraw them. To stop, ask on Telegram to pause new trades, or revoke the API wallet on <a href="https://app.hyperliquid.xyz/API" target="_blank" rel="noopener">app.hyperliquid.xyz/API</a>. If you revoke it, any open position stays on your account and is yours to manage.</p>
+            <p>Yes. Your funds stay on your Hyperliquid account and only your main wallet can withdraw them. To stop, ask on Telegram to pause new trades, or revoke the API wallet on <a href="https://app.hyperliquid.xyz/API" target="_blank" rel="noopener">app.hyperliquid.xyz/API</a>. If you revoke it, any open position stays on your account and is yours to manage. <a href="/guide/#stop">How to stop, step by step &rarr;</a></p>
           </details>
           <details>
             <summary>What losses should I expect?</summary>
@@ -538,7 +538,7 @@
           </details>
           <details>
             <summary>What happens if I do not pay a fee?</summary>
-            <p>Fees are due only after a quarter that ends above your high-water mark. Until a due fee is paid, no new positions are opened; positions already open keep being managed until they close. Paying with /billing or /settle restores normal trading.</p>
+            <p>Fees are due only after a quarter that ends above your high-water mark. If the smart contract cannot collect it, for example because your Arbitrum wallet is short of USDC, you can pay manually within 72 hours. Until it is paid, no new positions are opened. If it is not paid within 72 hours, the account is deactivated. <a href="/guide/#fees">Details &rarr;</a></p>
           </details>
           <details>
             <summary>What will I see after joining?</summary>
@@ -578,6 +578,7 @@
               <li><strong>First trade when the model signals.</strong> It can take days: the model trades only when a trend appears.</li>
               <li><strong>Renew the key every 180 days.</strong> The bot reminds you 7 days and 24 hours before; use /renew.</li>
             </ol>
+            <p style="margin:12px 0 0;font-size:13px;color:var(--muted);font-weight:300;">Once active, read the <a href="/guide/">client guide</a>: fees, rules and commands.</p>
           </div>
         </div>
 
@@ -645,7 +646,7 @@
       </div>
       <div>
         <strong>Explore</strong>
-        <p><a href="/notes/live-results/">Live results</a><br /><a href="/notes/">Notes</a><br /><a href="/start/">Beginner guide</a><br /><a href="/setup/">Setup guide</a></p>
+        <p><a href="/notes/live-results/">Live results</a><br /><a href="/notes/">Notes</a><br /><a href="/start/">Beginner guide</a><br /><a href="/setup/">Setup guide</a><br /><a href="/guide/">Client guide</a><br /><a href="/official/">Official channels</a></p>
       </div>
       <div>
         <strong>Revoke</strong>
@@ -653,7 +654,7 @@
       </div>
       <div>
         <strong>Contact</strong>
-        <p>Support runs on Telegram: <a href="https://t.me/TrustAlgo_Terminal_Bot">TrustAlgo Terminal</a>.</p>
+        <p>Support runs on Telegram: <a href="https://t.me/TrustAlgo_Terminal_Bot">TrustAlgo Terminal</a>. We never message you first. <a href="/official/">Official channels</a></p>
       </div>
       <p class="risk">Trading perpetual futures can lose capital, including your entire deposit. Past performance, live or simulated, does not guarantee future results. This site is not investment advice, not a solicitation and not an offer of a managed account. You authorize the API wallet and you can revoke it.</p>
     </footer>
