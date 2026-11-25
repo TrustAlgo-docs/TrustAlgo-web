@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrustAlgo v1.1: range models join trend following | TrustAlgo</title>
+<meta name="description" content="v1.1 is live. Trend-following rules are unchanged; range models on BTC and ETH now trade the sideways stretches, only while the trend model is flat.">
+<link rel="canonical" href="https://trustalgo.co/notes/range-models/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="TrustAlgo">
+<meta property="og:title" content="TrustAlgo v1.1: range models join trend following">
+<meta property="og:description" content="v1.1 is live. Trend-following rules are unchanged; range models on BTC and ETH now trade the sideways stretches, only while the trend model is flat.">
+<meta property="og:url" content="https://trustalgo.co/notes/range-models/">
+<meta property="og:image" content="https://trustalgo.co/notes/og/range-models-v1.jpg">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
+<meta property="og:image:alt" content="Trends pay. Ranges wait. v1.1 trades the ranges too.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@TrustAlgo_DEX">
+<meta name="twitter:title" content="TrustAlgo v1.1: range models join trend following">
+<meta name="twitter:description" content="v1.1 is live. Trend-following rules are unchanged; range models on BTC and ETH now trade the sideways stretches, only while the trend model is flat.">
+<meta name="twitter:image" content="https://trustalgo.co/notes/og/range-models-v1.jpg">
+<link rel="icon" href="/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c1114;--panel:#11181b;--line:#1d2a2d;--text:#c3cbcf;--white:#e8ecef;--teal:#9fc2c2;--badge:#1b3335;--badgetx:#8fb3b1;--muted:#5f686f}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+body{background:var(--bg)}
+.band{position:relative;overflow:hidden;background:radial-gradient(900px 420px at 88% -10%,rgba(121,184,184,.16),transparent 60%),#0c1014;border-bottom:1px solid rgba(121,184,184,.16);padding:30px 0 52px}
+.rays{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(115deg,transparent 0 14px,rgba(121,184,184,.14) 14px 15px),repeating-linear-gradient(102deg,transparent 0 22px,rgba(121,184,184,.08) 22px 23px);-webkit-mask-image:radial-gradient(520px 320px at 86% 0%,#000 0%,transparent 72%);mask-image:radial-gradient(520px 320px at 86% 0%,#000 0%,transparent 72%)}
+.band-inner{position:relative;max-width:720px;margin:0 auto;padding:0 24px}
+.band h1{margin-bottom:0;font-weight:500;font-size:clamp(34px,6vw,54px);line-height:1.06;letter-spacing:-.03em}
+.band h1 span{color:#79b8b8}
+a{color:var(--teal);text-decoration:none}
+.wrap{max-width:720px;margin:0 auto;padding:44px 24px 64px}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:56px}
+.brand{display:flex;align-items:center;gap:12px;color:#d9dce0;font-weight:600;letter-spacing:.06em;font-size:15px}
+.brand img{height:34px;width:auto}
+.back{font-family:'JetBrains Mono','DejaVu Sans Mono',monospace;font-size:12px;letter-spacing:.08em;color:var(--muted)}
+.meta{display:flex;align-items:center;gap:14px;font-family:'JetBrains Mono','DejaVu Sans Mono',monospace;font-size:12px;letter-spacing:.08em;margin-bottom:22px}
+.badge{background:var(--badge);color:var(--badgetx);padding:5px 10px;border-radius:3px}
+.date{color:var(--muted)}
+h1{font-weight:400;font-size:clamp(30px,6vw,44px);line-height:1.2;margin:0 0 28px;color:var(--white);letter-spacing:-.01em}
+h1 span{display:block;color:var(--teal)}
+.lead{font-size:19px;color:#d3d9dc;margin:0 0 40px}
+h2{font-family:'JetBrains Mono','DejaVu Sans Mono',monospace;font-weight:500;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--badgetx);margin:44px 0 12px}
+p{margin:0 0 16px}
+ul{margin:0 0 16px;padding-left:20px}li{margin:0 0 8px}
+strong{color:var(--white);font-weight:600}
+.note{font-size:14px;color:var(--muted)}
+.w{color:#9fc2c2}.l{color:#6f7a80}
+.log td{font-size:14px}
+table{width:100%;border-collapse:collapse;margin:8px 0 14px;font-size:15px}
+th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right}
+th:first-child,td:first-child{text-align:left;color:var(--text)}
+th{font-family:'JetBrains Mono','DejaVu Sans Mono',monospace;font-size:12px;letter-spacing:.08em;color:var(--muted);font-weight:500}
+td{color:var(--white);font-variant-numeric:tabular-nums}
+.cta{margin:52px 0 0;padding:24px;border:1px solid var(--line);background:var(--panel);border-radius:6px}
+.cta p{margin:0 0 16px;color:#d3d9dc}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-block;padding:11px 18px;border-radius:4px;font-size:15px;font-weight:500}
+.btn.primary{background:var(--teal);color:#0c1114}
+.btn.ghost{border:1px solid #2c3d40;color:var(--teal)}
+footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);line-height:1.6}
+</style>
+</head>
+<body>
+<section class="band"><div class="rays"></div><div class="band-inner">
+<header>
+  <a class="brand" href="/"><img src="/logo.png" alt="TrustAlgo logo">TRUSTALGO</a>
+  <a class="back" href="/notes/">ALL NOTES &rarr;</a>
+</header>
+<div class="meta"><span class="badge">RELEASE v1.1</span><span class="date">25 NOVEMBER 2026</span></div>
+<h1>Trends pay. Ranges wait.<span>v1.1 trades the ranges too.</span></h1>
+</div></section>
+<div class="wrap">
+<article>
+
+<p class="lead">Version 1.1 went live on 24 November 2026. Every trend-following rule stays exactly as it was. What&rsquo;s new are range models on BTC and ETH, built for the stretches when there is no trend to follow.</p>
+
+<h2>Why range models</h2>
+<p>Trend following earns its year in a few strong moves. Between them it is often flat, waiting. Range models work in the opposite conditions: they look for crowded positioning in a sideways market and trade the return toward balance.</p>
+<p>In our tests the daily returns of the two families were essentially uncorrelated. That is why they belong on the same account.</p>
+
+<h2>How they share the account</h2>
+<ul>
+  <li>A range position opens <strong>only when the trend model on that coin is flat</strong>.</li>
+  <li>When the trend model enters, the range position on that coin is closed first. Trend following never loses a trade because of it: in the backtest its 1,210 trades are identical with and without range models.</li>
+  <li><strong>SOL stays trend-only.</strong> No range model on SOL passed our tests.</li>
+</ul>
+
+<h2>How they execute</h2>
+<ul>
+  <li>Entries and exits use <strong>post-only limit orders</strong> (maker fees) for up to 2 hours, then market.</li>
+  <li>Every position gets a <strong>stop on Hyperliquid</strong> within 30 seconds of the fill.</li>
+  <li>Same non-custodial setup: same API wallet, no new permissions. Funds never leave your account.</li>
+</ul>
+
+<h2>What to expect</h2>
+<table>
+  <tr><th></th><th>BTC</th><th>ETH</th></tr>
+  <tr><td>Trades per month</td><td>~9</td><td>~9</td></tr>
+  <tr><td>Winning trades</td><td>55%</td><td>56%</td></tr>
+  <tr><td>Typical holding time</td><td>~1 day</td><td>~1 day</td></tr>
+  <tr><td>Longest losing streak</td><td>6</td><td>8</td></tr>
+  <tr><td>Worst month (% of account)</td><td>&minus;9%</td><td>&minus;7%</td></tr>
+</table>
+<p class="note">Backtest February 2021 &ndash; November 2026, Hyperliquid fees. Simulated, not live results. Future results can be much worse.</p>
+<p>The profile is the mirror image of trend following: more winners, smaller moves. Stops are wide and rarely hit (5&ndash;6% of trades), but when one is, a single loss can cost 2&ndash;5% of the account.</p>
+
+<h2>Frozen, like everything else</h2>
+<ul>
+  <li><strong>No parameter changes</strong> until the annual review in November 2027.</li>
+  <li><strong>Drawdown limits for the combined system are set in advance:</strong> review, then halve exposure, then stop new entries.</li>
+  <li><strong>Audited monthly:</strong> live range trades are compared with the backtest. If they diverge two months in a row, the range models are paused until the cause is found.</li>
+</ul>
+<p>We will report the first live range trades in the monthly results.</p>
+
+<div class="cta">
+  <p>Your funds stay on your Hyperliquid account. The API wallet can trade, it cannot withdraw, and you can revoke it at any time.</p>
+  <div class="btns">
+    <a class="btn primary" href="/#onboarding">Start onboarding</a>
+    <a class="btn ghost" href="/#architecture">How TrustAlgo works</a>
+  </div>
+</div>
+</article>
+<footer>
+Backtest figures are simulations and cannot capture every live condition. Past performance, simulated or live, does not guarantee future results. Trading perpetual futures involves a substantial risk of loss, including the loss of your entire deposit. Nothing on this page is financial advice.
+</footer>
+</div>
+</body>
+</html>
